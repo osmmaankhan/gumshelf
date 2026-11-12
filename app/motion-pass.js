@@ -66,7 +66,15 @@
   }
   // Toasts confirm with a small pulse.
   const toast = document.querySelector('#toast');
-  if (toast) new MutationObserver(() => { if (toast.classList.contains('show')) pulse(toast); }).observe(toast, { attributes: true, attributeFilter: ['class'], childList: true, characterData: true });
+  // pulse() itself changes the toast's class, so only a newly shown toast or new toast text may pulse.
+  // Reacting to every class change re-triggered this observer forever and froze the window.
+  let toastShown = false;
+  if (toast) new MutationObserver(records => {
+    const shown = toast.classList.contains('show');
+    const newText = records.some(r => r.type !== 'attributes');
+    if (shown && (!toastShown || newText)) pulse(toast);
+    toastShown = shown;
+  }).observe(toast, { attributes: true, attributeFilter: ['class'], childList: true, characterData: true, subtree: true });
 
   /* ---------- Glowing grid ---------- */
   const GRID = '.product-list, .category-grid, .home-row, .home-tiles';
