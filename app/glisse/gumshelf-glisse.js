@@ -1,44 +1,56 @@
 /* Wires Glisse (glisse.js) into GumShelf's existing markup. Presentation only:
- * native clicks, inputs, checkboxes and app state stay owned by app.js. */
+ * native clicks, inputs, checkboxes and app state stay owned by app.js.
+ * app.js re-renders by replacing #app's markup, so every animated control keeps
+ * its spring state by id here and the new element continues where the old one was. */
 (function () {
   'use strict';
   const G = window.Glisse, body = document.body, app = document.querySelector('#app'), modal = document.querySelector('#modal');
   if (!G || !app) return;
   const full = () => !G.reduced();
 
-  /* ---------- Glass controller -> Glisse settings ----------
+  /* ---------- Input modality: focus rings only for keyboard users ---------- */
+  const setInput = mode => { if (body.dataset.input !== mode) body.dataset.input = mode; };
+  addEventListener('pointerdown', () => setInput('pointer'), { capture: true, passive: true });
+  addEventListener('keydown', e => { if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'F6'].includes(e.key)) setInput('keyboard'); }, { capture: true });
+  setInput('pointer');
+
+  /* ---------- Glass controller -> Glisse settings (whole app) ----------
    * Settings > Glass effects writes --glass-displacement (Bend 0–12),
    * --glass-dispersion (0–1), --glass-frost (px) and --glass-rim (0–1) on body.
-   * Glisse reads --lg-glass-bend (0–1 share of the short side), --lg-glass-dispersion,
-   * --lg-blur and --lg-rim-shine. Map once here so every glass surface follows. */
+   * Bend/Dispersion drive every lens (sidebar, slider, segmented, sample);
+   * Frost drives the blur of every glass surface; Rim drives the rim light on
+   * buttons, fields, menus, the sidebar and the top bar. */
   let lastSettings = '';
   function syncSettings() {
     const cs = getComputedStyle(body), n = (name, d) => { const v = parseFloat(cs.getPropertyValue(name)); return Number.isFinite(v) ? v : d; };
     const dark = body.dataset.theme === 'dark';
-    const bend = n('--glass-displacement', 12) / 12 * 0.45;          // 12 -> Glisse's 0.45
+    const bend = n('--glass-displacement', 12) / 12 * 0.45;
     const dispersion = n('--glass-dispersion', 0.5);
     const frost = n('--glass-frost', 3);
     const rim = n('--glass-rim', 0.45);
-    const shine = Math.min(1, rim * (dark ? 0.3 : 0.67));             // 0.45 -> 0.3 light / 0.13 dark (Glisse defaults)
-    const next = [bend, dispersion, frost, shine].map(v => +v.toFixed(3)).join('|');
+    const shine = Math.min(1, rim * (dark ? 0.3 : 0.67));
+    const next = [bend, dispersion, frost, shine, dark].join('|');
     if (next === lastSettings) return;
     lastSettings = next;
     body.style.setProperty('--lg-glass-bend', bend.toFixed(3));
     body.style.setProperty('--lg-glass-dispersion', dispersion.toFixed(3));
     body.style.setProperty('--lg-blur', frost + 'px');
+    body.style.setProperty('--lg-panel-blur', Math.max(frost * 3, 8) + 'px');
     body.style.setProperty('--lg-rim-shine', shine.toFixed(3));
+    body.style.setProperty('--lg-rim-alpha', Math.min(1, rim * 1.6).toFixed(3));
     G.refitAll();
   }
   document.addEventListener('gumshelf-appearance', syncSettings);
-  new MutationObserver(syncSettings).observe(body, { attributes: true, attributeFilter: ['style', 'data-theme', 'data-theme-variant'] });
+  new MutationObserver(syncSettings).observe(body, { attributes: true, attributeFilter: ['data-theme', 'data-theme-variant'] });
 
   /* ---------- Decorate surfaces ---------- */
-  const GLASS = '.btn:not(.text):not(.primary), .icon-button, .search, [popover]';
+  const GLASS = '.btn:not(.text):not(.primary), .icon-button, .search, [popover], .home-mode, .theme-pick';
   function decorate(root) {
     for (const el of root.querySelectorAll(GLASS)) G.glass(el);
+    for (const el of root.querySelectorAll('.rail, .topline')) G.glass(el, { surface: false });
     for (const el of root.querySelectorAll('.glass-demo-lens')) G.glass(el, { bend: true });
-    for (const group of root.querySelectorAll('.theme-pick')) segmented(group);
-    for (const grid of root.querySelectorAll('.category-grid, .product-list, .collection')) {
+    for (const group of root.querySelectorAll('.theme-pick, .home-mode')) segmented(group);
+    for (const grid of root.querySelectorAll('.category-grid, .product-list, .collection, .home-row, .home-tiles')) {
       let i = 0; for (const child of grid.children) { if (i > 12) break; child.style.setProperty('--lg-i', i++); }
     }
     for (const input of root.querySelectorAll('#notifications, #home-typewriter, #home-quote-shuffle')) switchControl(input);
@@ -49,7 +61,7 @@
   if (modal) new MutationObserver(schedule).observe(modal, { childList: true, subtree: true });
 
   /* ---------- Press (Glisse Button feel) ---------- */
-  const PRESS = '.btn, .icon-button, .chip, .type-chip, .home-pick, .category-card, .creator-card, .theme-pick label, .search-clear';
+  const PRESS = '.btn, .icon-button, .chip, .type-chip, .home-pick, .home-card, .home-tile, .category-card, .creator-card, .theme-pick label, .home-mode label, .search-clear, .select-row';
   document.addEventListener('pointerdown', e => {
     if (!e.isPrimary || e.button !== 0) return;
     const el = e.target.closest?.(PRESS);
@@ -57,80 +69,121 @@
     G.press(el, e);
   }, { passive: true });
 
-  /* ---------- Slider: lift spring [2000, 80] and eased card size [676, 47.8] ---------- */
-  const lifts = new WeakMap();
-  function liftFor(input) {
-    let s = lifts.get(input);
-    if (!s) { s = G.spring(0, 2000, 80, v => { input.style.setProperty('--lg-lift', v.toFixed(3)); input.toggleAttribute('data-lg-lifted', v > 0.01); }); lifts.set(input, s); }
-    return s;
+  /* ---------- Slider: the thumb lifts into a glass lens over the track ---------- */
+  const lens = document.createElement('div');
+  lens.className = 'lg-range-lens'; lens.setAttribute('aria-hidden', 'true'); body.append(lens);
+  const lensGlass = G.glass(lens, { bend: true, surface: false });
+  let held = null;
+  const lensLift = G.spring(0, 2000, 80, v => {
+    lens.style.setProperty('--lg-lift', v.toFixed(3));
+    lens.style.opacity = v > 0.01 ? '1' : '0';
+    lensGlass.lens?.update(v);
+    if (held) held.input.style.setProperty('--lg-lift', v.toFixed(3));
+    if (v <= 0.01 && !held) lens.hidden = true;
+  });
+  lens.hidden = true;
+  function fitLens() {
+    if (!held) return;
+    const el = held.input, b = el.getBoundingClientRect(), min = +el.min || 0, max = +el.max || 100;
+    const p = max > min ? Math.max(0, Math.min(1, (+el.value - min) / (max - min))) : 0;
+    const thumb = parseFloat(getComputedStyle(el).getPropertyValue('--range-thumb-width')) || 30;
+    const w = thumb * 1.55, h = 26;
+    const x = b.left + thumb / 2 + (b.width - thumb) * p - w / 2, y = b.top + b.height / 2 - h / 2;
+    lens.style.cssText += `;width:${w}px;height:${h}px;transform:translate(${x}px,${y}px)`;
   }
-  let heldRange = null;
   document.addEventListener('pointerdown', e => {
     const input = e.target.closest?.('input[type=range]');
     if (!input || input.disabled || !e.isPrimary) return;
-    heldRange = { input, id: e.pointerId }; liftFor(input).set(full() ? 1 : 0);
+    held = { input, id: e.pointerId };
+    if (!full()) return;
+    input.setAttribute('data-lg-lifted', '');
+    lens.hidden = false; requestAnimationFrame(() => { fitLens(); lensGlass.dirty(); G.refitAll(); lensLift.set(1); });
   }, { passive: true });
-  const dropRange = e => { if (!heldRange || (e && e.pointerId !== undefined && e.pointerId !== heldRange.id)) return; liftFor(heldRange.input).set(0); heldRange = null; };
+  const dropRange = e => {
+    if (!held || (e && e.pointerId !== undefined && e.pointerId !== held.id)) return;
+    held.input.removeAttribute('data-lg-lifted'); held.input.style.removeProperty('--lg-lift');
+    held = null; lensLift.set(0);
+  };
   for (const t of ['pointerup', 'pointercancel']) addEventListener(t, dropRange, { passive: true });
   addEventListener('blur', () => dropRange());
+  document.addEventListener('input', e => { if (held && e.target === held.input) fitLens(); }, true);
+  document.addEventListener('scroll', fitLens, { capture: true, passive: true });
 
+  /* ---------- Eased card sizes: categories/creators and library products ---------- */
   const rootStyle = document.documentElement.style;
-  const cardSize = G.spring(parseFloat(rootStyle.getPropertyValue('--category-card-min')) || 190, 676, 47.8, v => rootStyle.setProperty('--category-card-live', v.toFixed(2) + 'px'));
-  cardSize.jump(cardSize.value);
+  function easedVar(source, live, k, c, fallback) {
+    const s = G.spring(parseFloat(rootStyle.getPropertyValue(source)) || fallback, k, c, v => rootStyle.setProperty(live, v.toFixed(2) + 'px'));
+    s.jump(s.value);
+    let last = parseFloat(rootStyle.getPropertyValue(source));
+    new MutationObserver(() => {
+      const v = parseFloat(rootStyle.getPropertyValue(source));
+      if (!Number.isFinite(v) || v === last) return;
+      last = v; s.set(v);
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+    return s;
+  }
+  const cardSize = easedVar('--category-card-min', '--category-card-live', 676, 47.8, 190);
+  easedVar('--product-card-min', '--product-card-live', 676, 47.8, 340);
   document.addEventListener('input', e => { if (e.target.id === 'category-size') cardSize.set(Number(e.target.value)); }, true);
-  // Ctrl+wheel and render() set --category-card-min directly; follow them with the spring.
-  // Only a change of --category-card-min itself counts (the spring's own writes also touch this style).
-  let lastMin = parseFloat(rootStyle.getPropertyValue('--category-card-min'));
-  new MutationObserver(() => {
-    const v = parseFloat(rootStyle.getPropertyValue('--category-card-min'));
-    if (!Number.isFinite(v) || v === lastMin) return;
-    lastMin = v; cardSize.set(v);
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
 
   /* ---------- Switch: position/colour [1000, 80], lift [2000, 80] ---------- */
-  const switches = new WeakMap();
+  const switchState = new Map(); // id -> { pos, lift, input }
   function switchControl(input) {
-    if (switches.has(input)) { switches.get(input).sync(true); return; }
-    input.setAttribute('data-lg-switch', '');
-    const pos = G.spring(input.checked ? 1 : 0, 1000, 80, v => input.style.setProperty('--lg-switch', v.toFixed(3)));
-    const lift = G.spring(0, 2000, 80, v => input.style.setProperty('--lg-lift', v.toFixed(3)));
-    const api = { sync(instant) { pos.set(input.checked ? 1 : 0, instant); } };
-    pos.jump(input.checked ? 1 : 0);
-    input.addEventListener('change', () => pos.set(input.checked ? 1 : 0));
-    input.addEventListener('pointerdown', () => lift.set(full() ? 1 : 0));
-    for (const t of ['pointerup', 'pointercancel', 'pointerleave', 'blur']) input.addEventListener(t, () => lift.set(0));
-    switches.set(input, api);
+    const id = input.id;
+    let s = switchState.get(id);
+    if (!s) {
+      s = { input };
+      s.pos = G.spring(input.checked ? 1 : 0, 1000, 80, v => s.input.style.setProperty('--lg-switch', v.toFixed(3)));
+      s.lift = G.spring(0, 2000, 80, v => s.input.style.setProperty('--lg-lift', v.toFixed(3)));
+      s.pos.jump(input.checked ? 1 : 0);
+      switchState.set(id, s);
+    }
+    if (s.input !== input) { s.input = input; s.pos.paint(); s.lift.paint(); }
+    if (input.dataset.lgSwitch === undefined) {
+      input.setAttribute('data-lg-switch', '');
+      input.addEventListener('pointerdown', () => s.lift.set(full() ? 1 : 0));
+      for (const t of ['pointerup', 'pointercancel', 'pointerleave', 'blur']) input.addEventListener(t, () => s.lift.set(0));
+    }
+    s.pos.set(input.checked ? 1 : 0);
   }
+  // Animate the instant it is clicked (before any re-render arrives).
+  document.addEventListener('change', e => { const s = switchState.get(e.target.id); if (s && e.target === s.input) s.pos.set(e.target.checked ? 1 : 0); }, true);
 
-  /* ---------- Segmented control: sliding thumb [1024, 58.9] ---------- */
-  const segments = new WeakMap();
+  /* ---------- Segmented control: sliding thumb [1024, 58.9], kept across renders ---------- */
+  const segState = new Map(); // key -> { x, w, springs }
+  function segKey(group) { return group.className.split(' ')[0] + ':' + (group.querySelector('input')?.name || ''); }
   function segmented(group) {
-    let seg = segments.get(group);
-    if (!seg) {
+    const key = segKey(group);
+    let st = segState.get(key);
+    if (!st) {
+      st = { g: { x: 0, w: 0, y: 0, h: 0 }, thumb: null, placed: false };
+      const paint = () => { if (!st.thumb) return; const g = st.g; st.thumb.style.width = g.w + 'px'; st.thumb.style.height = g.h + 'px'; st.thumb.style.transform = `translate(${g.x}px, ${g.y}px)`; };
+      st.paint = paint;
+      st.x = G.spring(0, 1024, 58.9, v => { st.g.x = v; paint(); });
+      st.w = G.spring(0, 1024, 58.9, v => { st.g.w = v; paint(); });
+      segState.set(key, st);
+    }
+    if (!group.classList.contains('lg-segmented')) {
       group.classList.add('lg-segmented');
       const thumb = document.createElement('span'); thumb.className = 'lg-segmented-thumb'; thumb.setAttribute('aria-hidden', 'true'); group.prepend(thumb);
-      const g = { x: 0, w: 0, h: 0, y: 0 };
-      const paint = () => { thumb.style.width = g.w + 'px'; thumb.style.height = g.h + 'px'; thumb.style.transform = `translate(${g.x}px, ${g.y}px)`; };
-      const springs = { x: G.spring(0, 1024, 58.9, v => { g.x = v; paint(); }), w: G.spring(0, 1024, 58.9, v => { g.w = v; paint(); }) };
-      seg = { thumb, g, springs, placed: false };
-      group.addEventListener('change', () => place(group, true));
-      new ResizeObserver(() => place(group, false)).observe(group);
-      segments.set(group, seg);
+      st.thumb = thumb; st.group = group;
+      group.addEventListener('change', () => place(key, true));
+      new ResizeObserver(() => place(key, false)).observe(group);
+      st.paint();
     }
-    place(group, false);
+    place(key, st.placed);
   }
-  function place(group, animate) {
-    const seg = segments.get(group); if (!seg) return;
-    const span = group.querySelector('input:checked + span'); if (!span) { seg.thumb.style.opacity = '0'; return; }
-    seg.thumb.style.opacity = '1';
-    const a = span.getBoundingClientRect(), b = group.getBoundingClientRect();
+  function place(key, animate) {
+    const st = segState.get(key); if (!st?.group?.isConnected) return;
+    const span = st.group.querySelector('input:checked + span'); if (!span) { st.thumb.style.opacity = '0'; return; }
+    st.thumb.style.opacity = '1';
+    const a = span.getBoundingClientRect(), b = st.group.getBoundingClientRect();
+    st.g.y = a.top - b.top; st.g.h = a.height;
     const x = a.left - b.left, w = a.width;
-    seg.g.y = a.top - b.top; seg.g.h = a.height;
-    if (!animate || !seg.placed) { seg.springs.x.jump(x); seg.springs.w.jump(w); seg.placed = true; }
-    else { seg.springs.x.set(x); seg.springs.w.set(w); }
+    if (!animate || !st.placed) { st.x.jump(x); st.w.jump(w); st.placed = true; } else { st.x.set(x); st.w.set(w); }
   }
 
-  /* ---------- Menu: open from the trigger ---------- */
+  /* ---------- Menus and dropdowns open from their trigger ---------- */
   document.addEventListener('beforetoggle', e => {
     const menu = e.target;
     if (!(menu instanceof HTMLElement) || !menu.hasAttribute('popover') || e.newState !== 'open') return;

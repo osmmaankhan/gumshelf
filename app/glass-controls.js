@@ -35,7 +35,7 @@
   const solid = document.body.dataset.material === 'solid';
   const refraction = document.body.dataset.refractionProof === 'passed';
   const message = solid ? 'Glass controls are paused while solid surfaces are active.'
-   : surface.value === 'desktop' ? 'Try the effects in this sample. Windows controls the blur behind the desktop window.'
+   : surface.value === 'desktop' ? 'Windows blurs the wallpaper behind the window. Bend and Dispersion shape every GumShelf lens (sidebar, sliders, segmented controls, this sample); Frost and Rim shape buttons, fields, menus, the sidebar and the top bar.'
    : 'Bend, Dispersion, Frost and Rim apply live to buttons, search fields, menus and the sidebar lens. Press and hold a sidebar item to see the lens bend.';
   const helpText = message;
   if (help.textContent !== helpText) help.textContent = helpText;

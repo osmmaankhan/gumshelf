@@ -1,0 +1,4 @@
+﻿const test=require('node:test'),assert=require('node:assert/strict'),Intent=require('../app/intent.js'),Catalog=require('../app/catalog.js');
+const products=[{id:'a',name:'Branding kit'},{id:'b',name:'Shirt mockup'},{id:'c',name:'Font family'},{id:'d',name:'Secret mockup',hidden:true}];
+test('brand project finds real catalog types and excludes hidden products',()=>{const p=Intent.plan('streetwear brand launch',products,Catalog);for(const id of ['branding','mockups','fonts'])assert.ok(p.types.some(t=>t.id===id));assert.ok(p.types.every(t=>Catalog.types.some(c=>c.id===t.id)));assert.ok(p.groups.flatMap(g=>g.products).every(x=>!x.hidden));assert.equal(p.types.find(t=>t.id==='mockups').count,1);});
+test('simple plurals and empty input',()=>{assert.ok(Intent.plan('posters',products,Catalog).types.some(t=>t.id==='fonts'));assert.deepEqual(Intent.plan('',products,Catalog),{types:[],software:[],groups:[],unmatchedWords:[]});});

@@ -306,7 +306,7 @@
   }
   function refitAll() { for (const g of glasses.values()) g.dirty(); schedule(); }
   new MutationObserver(refitAll).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'], subtree: false });
-  document.addEventListener('DOMContentLoaded', () => new MutationObserver(refitAll).observe(document.body, { attributes: true, attributeFilter: ['data-theme', 'data-theme-variant', 'data-material', 'style'] }));
+  document.addEventListener('DOMContentLoaded', () => new MutationObserver(refitAll).observe(document.body, { attributes: true, attributeFilter: ['data-theme', 'data-theme-variant', 'data-material'] }));
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', refitAll);
 
   const api = { spring, press, glass, backdropLens, refitAll, reduced, lensMap, rimMap, distance, GLASS, POINTER, TOUCH };
