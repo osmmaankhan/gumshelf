@@ -92,7 +92,21 @@
   }, { passive: true });
   document.addEventListener('pointerleave', () => { activeGrid?.classList.remove('is-glowing'); activeGrid = null; }, true);
 
+  /* The details pane is sticky inside the main panel; size it to the panel's real
+   * visible height (100vh overshot it, so its bottom and the ⋯ button were out of reach). */
+  let boundPanel = null, measureFrame = 0;
+  function measurePanel() {
+    const panel = document.querySelector('.main-panel');
+    if (!panel) return;
+    document.documentElement.style.setProperty('--panel-h', panel.clientHeight + 'px');
+    // The pane may start below the page header; give it exactly the space left in the panel.
+    const pane = panel.querySelector(':is(.discovery-layout, .home-v2) .detail, .detail');
+    if (pane) { const room = panel.getBoundingClientRect().bottom - pane.getBoundingClientRect().top - 16; pane.style.setProperty('--detail-max', Math.max(240, Math.round(room)) + 'px'); }
+    if (panel !== boundPanel) { boundPanel = panel; panel.addEventListener('scroll', () => { if (!measureFrame) measureFrame = requestAnimationFrame(() => { measureFrame = 0; measurePanel(); }); }, { passive: true }); }
+  }
+  addEventListener('resize', measurePanel);
+
   /* After every render: pulses for actions that just re-rendered their button. */
   let queued = false;
-  new MutationObserver(() => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; flushPulses(); }); } }).observe(app, { childList: true, subtree: true });
+  new MutationObserver(() => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; flushPulses(); measurePanel(); }); } }).observe(app, { childList: true, subtree: true });
 })();

@@ -262,3 +262,24 @@ body[data-theme] .suggest-remove {
 body[data-theme] .suggest-remove svg { width: 14px; height: 14px; }
 body[data-theme] .search-suggest-option:is(:hover, [aria-selected=true]) .suggest-remove { opacity: 1; }
 @media (hover: hover) and (pointer: fine) { body[data-theme] :is(.suggest-remove, .suggest-clear):hover { background: color-mix(in srgb, var(--color-text) 9%, transparent); } }
+
+/* ================= 0.4.42 ================= */
+/* Details pane scrolls fully inside the panel. */
+body[data-theme] :is(.discovery-layout .detail, .home-v2 .detail) {
+  max-height: var(--detail-max, calc(var(--panel-h, 100vh) - 2 * var(--space-md, 16px))) !important;
+  overflow-y: auto !important; overscroll-behavior: contain;
+  padding-bottom: 20px !important; box-sizing: border-box;
+}
+/* "Visit on Gumroad" and its ⋯ menu share one row, ⋯ on the right. */
+body[data-theme] .detail .detail-actions { display: flex !important; flex-direction: row !important; align-items: center; gap: 8px; flex-wrap: nowrap; }
+body[data-theme] .detail .detail-actions > .btn { flex: 1 1 auto; min-width: 0; }
+body[data-theme] .detail .detail-actions > .product-menu-trigger {
+  flex: none; order: 2; width: 44px !important; height: 44px !important; min-height: 44px !important; margin: 0 !important;
+  display: inline-grid !important; place-items: center; border-radius: var(--radius-choice) !important;
+}
+
+/* The quote stays readable above the Jump back in stack; the stack lifts less on hover. */
+body[data-theme] .home-quote-strip { position: relative; z-index: 4; }
+@media (hover: hover) and (pointer: fine) {
+  body[data-motion=full] .home-shelf.is-stacked:hover { transform: translateY(-46px) !important; }
+}
