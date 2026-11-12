@@ -90,6 +90,7 @@
    * spring [2000, 80] rises it grows to 1.5x wide / 1.35x tall, the white thumb
    * crossfades out and the track shows through the bending glass. It follows the
    * value every frame with no CSS transition, so it never travels or jumps. */
+  const SLIDER_LENS = false;
   const lens = document.createElement('div');
   lens.className = 'lg-range-lens'; lens.setAttribute('aria-hidden', 'true'); lens.hidden = true; body.append(lens);
   const lensGlass = G.glass(lens, { bend: true, surface: false });
@@ -121,6 +122,7 @@
   });
   function follow() { if (held) { geo = thumbGeometry(held.input); paintLens(lensLift.value); } }
   document.addEventListener('pointerdown', e => {
+    if (!SLIDER_LENS) return; // glass slider lens switched off for now (user request); sliders stay plain
     const input = e.target.closest?.('input[type=range]');
     if (!input || input.disabled || !e.isPrimary) return;
     held = { input, id: e.pointerId };

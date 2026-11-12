@@ -1,6 +1,6 @@
 {
   "name": "gumshelf",
-  "version": "0.4.40",
+  "version": "0.4.41",
   "description": "A private desktop home for your Gumroad library",
   "main": "main.cjs",
   "author": "GumShelf",

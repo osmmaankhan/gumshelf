@@ -26,7 +26,7 @@ body[data-theme] .home-quote-strip #home-headline {
 body[data-theme] .home-quote-strip :is(.quote-attribution, .quote-theme) { margin: 0; font-size: 12.5px; color: var(--color-secondary, var(--color-text)); }
 body[data-theme] .home-quote-strip .quote-attribution:not(:empty) + .quote-theme::before { content: "·"; margin-inline-end: 8px; opacity: .6; }
 body[data-theme] .home-quote-strip > :last-child { margin-inline-start: 4px !important; }
-body[data-theme] .home-quote-strip :is(.icon-button, .btn, .product-menu-trigger) { width: 30px !important; height: 30px !important; min-height: 30px !important; }
+body[data-theme] .home-quote-strip .quote-actions > .product-menu-trigger { width: 30px !important; height: 30px !important; min-height: 30px !important; }
 
 /* ---------- Jump back in / Rediscover: cards pop in as the shelf scrolls into view ---------- */
 body[data-motion=full] .home-shelf:not(.is-in) .home-card { opacity: 0; transform: translateY(26px) rotate(-2.5deg) scale(.94); }
@@ -237,3 +237,28 @@ body[data-theme=dark] :is(.main-panel .product .cover-button, .detail .hero-cove
 body[data-theme] .main-panel .product .cover-placeholder-icon svg { width: 36px; height: 36px; }
 body[data-theme] .main-panel .product .cover-placeholder-label { font-size: 13px; }
 body[data-theme] .main-panel .product .hidden-art { display: grid; place-items: center; }
+
+/* 0.4.41: menu items are full-width rows (icon + label), never squashed into icon boxes. */
+body[data-theme] .product-actions-menu > :is(.btn, button) {
+  display: flex !important; align-items: center; justify-content: flex-start !important; gap: 10px;
+  width: 100% !important; height: 36px !important; min-height: 36px !important; padding: 0 10px !important;
+  border: 0 !important; border-radius: 8px !important; background: transparent !important; background-image: none !important; box-shadow: none !important;
+  font-size: 13px; white-space: nowrap; text-align: start;
+}
+body[data-theme] .product-actions-menu > :is(.btn, button) svg { flex: none; width: 16px; height: 16px; }
+body[data-theme] .product-actions-menu > :is(.btn, button):not(:has(svg))::before { content: ''; flex: none; width: 16px; }
+@media (hover: hover) and (pointer: fine) { body[data-theme] .product-actions-menu > :is(.btn, button):hover { background: color-mix(in srgb, var(--color-text) 7%, transparent) !important; } }
+body[data-theme] .product-actions-menu .quote-delete-action { color: #c2410c; }
+
+/* Recent-search controls. */
+body[data-theme] .search-suggest-group { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+body[data-theme] .suggest-clear { border: 0; background: none; padding: 2px 6px; border-radius: 6px; font: 600 11.5px inherit; color: var(--color-focus); cursor: pointer; }
+body[data-theme] .search-suggest-option[data-kind=recent] { justify-content: space-between; }
+body[data-theme] .suggest-recent-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body[data-theme] .suggest-remove {
+  flex: none; display: inline-grid; place-items: center; width: 26px; height: 26px; padding: 0; border: 0; border-radius: 6px;
+  background: transparent; color: var(--color-secondary, var(--color-text)); cursor: pointer; opacity: .55;
+}
+body[data-theme] .suggest-remove svg { width: 14px; height: 14px; }
+body[data-theme] .search-suggest-option:is(:hover, [aria-selected=true]) .suggest-remove { opacity: 1; }
+@media (hover: hover) and (pointer: fine) { body[data-theme] :is(.suggest-remove, .suggest-clear):hover { background: color-mix(in srgb, var(--color-text) 9%, transparent); } }
