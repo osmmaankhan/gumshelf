@@ -28,7 +28,7 @@
     const dispersion = n('--glass-dispersion', 0.5);
     const frost = n('--glass-frost', 3);
     const rim = n('--glass-rim', 0.45);
-    const shine = Math.min(1, rim * (dark ? 0.3 : 0.67));
+    const shine = Math.round(Math.min(1, rim * (dark ? 0.3 : 0.67)) * 20) / 20; // 0.05 steps: rim images are cached per value
     const next = [bend, dispersion, frost, shine, dark].join('|');
     if (next === lastSettings) return;
     lastSettings = next;
@@ -38,9 +38,25 @@
     body.style.setProperty('--lg-panel-blur', Math.max(frost * 3, 8) + 'px');
     body.style.setProperty('--lg-rim-shine', shine.toFixed(3));
     body.style.setProperty('--lg-rim-alpha', Math.min(1, rim * 1.6).toFixed(3));
-    G.refitAll();
+    if (draggingGlass) { for (const el of document.querySelectorAll('.glass-demo-lens')) G.glass(el, { bend: true }); refitPending = true; }
+    else G.refitAll();
   }
-  document.addEventListener('gumshelf-appearance', syncSettings);
+  /* Slider performance: Settings > Glass effects fires an event on every pixel of a drag.
+   * Coalesce to one update per frame, and while the thumb is held repaint only the
+   * sample lens (one element) instead of every rim and lens filter in the app
+   * (~30 canvas images + filter rebuilds per event caused the stutter). On release,
+   * after the app is idle for a moment, everything catches up once. */
+  let draggingGlass = false, refitPending = false, syncFrame = 0, settleTimer = 0;
+  function scheduleSync() { if (!syncFrame) syncFrame = requestAnimationFrame(() => { syncFrame = 0; syncSettings(); }); }
+  function settle() {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => { draggingGlass = false; if (refitPending) { refitPending = false; G.refitAll(); } }, 140);
+  }
+  document.addEventListener('pointerdown', e => { if (e.target.matches?.('input[type=range][id^="glass-"]')) { draggingGlass = true; clearTimeout(settleTimer); } }, true);
+  for (const t of ['pointerup', 'pointercancel']) addEventListener(t, () => { if (draggingGlass) settle(); }, true);
+  document.addEventListener('change', e => { if (e.target.matches?.('input[type=range][id^="glass-"]')) settle(); }, true);
+  document.addEventListener('keyup', e => { if (e.target.matches?.('input[type=range][id^="glass-"]')) { draggingGlass = true; settle(); } }, true);
+  document.addEventListener('gumshelf-appearance', scheduleSync);
   new MutationObserver(syncSettings).observe(body, { attributes: true, attributeFilter: ['data-theme', 'data-theme-variant'] });
 
   /* ---------- Decorate surfaces ---------- */
