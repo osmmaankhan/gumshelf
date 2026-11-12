@@ -5,7 +5,7 @@
  function homeTries(products){
   const counts=new Map();for(const p of products.filter(p=>!p.hidden&&!p.archived)){const type=catalog.infer(p).type;counts.set(type,(counts.get(type)||0)+1);}
   const tasks={mockups:['Mockups for a product launch','plan'],fonts:['Fonts for a brand identity','plan'],textures:['Textures with grain','find'],brushes:['Brushes for an illustration','plan'],models:['Models for a 3D scene','plan'],graphics:['Graphics for a social campaign','plan'],templates:['Templates for social posts','plan'],branding:['Branding for a new identity','plan']};
-  const tries=[...counts].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,3).map(([id])=>{const [text,mode]=tasks[id]||[catalog.byId(id).label,'find'];return {text,mode};});
+  const tries=[...counts].filter(([id])=>id!=='uncategorized').sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,3).map(([id])=>{const [text,mode]=tasks[id]||[catalog.byId(id).label,'find'];return {text,mode};});
   for(const [text,mode] of [['Plan a brand identity','plan'],['Find a resource','find'],['Plan a product launch','plan']]){if(tries.length===3)break;tries.push({text,mode});}
   return tries;
  }
