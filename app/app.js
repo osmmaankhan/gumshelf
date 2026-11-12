@@ -175,7 +175,6 @@ function navigate(v,scope={},pointerNavigation=false){view=v;filtersOpen=false;h
 async function act(action,el,pointerNavigation=false){
  if(demo&&['connect','repair-helper','full-scan','test-scan','refresh-product','quick-scan','sample-scan','retry-details','resume','pause','cancel','disconnect','visit','review','mark-reviewed','undo-review','quote-import-confirm'].includes(action)){toast('Exit the demo to use your real library.');return;}
  if(!api&&(['connect-dialog','repair-helper','copy-helper-path','helper-folder','open-library','connect','full-scan','test-scan','refresh-product','quick-scan','sample-scan','retry-details','resume','pause','cancel','disconnect','visit','review','mark-reviewed','undo-review','quote-import-confirm'].includes(action)||(action==='apply-review'&&!demo))){toast('This is a browser preview. Open GumShelf.exe in GumShelf-Windows-v0.3 to use your saved library and desktop actions.');return;}switch(action){
- // TODO(release): Replace these placeholders with published support links.
  case 'open-support':case 'open-repo':if(!api||!(await api.openLink(action==='open-support'?'support':'repo')).opened)toast('Link coming soon');break;
  case 'toggle-filters':filtersOpen=!filtersOpen;render();break;
  case 'check-product':{const p=byId(el.dataset.id);if(p&&!p.hidden){checked.has(p.id)?checked.delete(p.id):checked.add(p.id);render();}break;}

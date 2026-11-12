@@ -1,7 +1,7 @@
 const {app,BrowserWindow,ipcMain,dialog,shell,Notification,protocol,net,session,nativeTheme,clipboard,systemPreferences,nativeImage,Menu}=require('electron');
 const fs=require('node:fs');const path=require('node:path');const {pathToFileURL}=require('node:url');
 const {normalizeTheme,themeSource,normalizePalette,palettePatch,appearancePatch}=require('./app/appearance.js');
-const LINKS = { support: '', repo: '' }; // TODO(release): fill in
+const LINKS = { support: 'https://osmmaankhan.gumroad.com/l/gumshelf', repo: 'https://github.com/osmmaankhan/gumshelf' };
 const {linkFor}=require('./lib/links.cjs');
 const WindowAppearance=require('./lib/window-appearance.cjs');
 const GlassProof=require('./lib/glass-proof.cjs');
