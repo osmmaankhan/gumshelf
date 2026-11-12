@@ -129,7 +129,7 @@ body[data-theme] .theme-pick.lg-segmented input:checked + span { color: var(--co
 
 /* ---------- Slider ---------- */
 body[data-theme] input[type=range]::-webkit-slider-thumb { transition: opacity 120ms ease; }
-body[data-theme] input[type=range][data-lg-lifted]::-webkit-slider-thumb { opacity: 0; }
+body[data-theme] input[type=range][data-lg-lifted]::-webkit-slider-thumb { opacity: var(--lg-thumb-fade, 0); transition: none; }
 body[data-theme] input[type=range][data-lg-old-lift]::-webkit-slider-thumb {
   background: color-mix(in srgb, var(--color-raised) calc((1 - var(--lg-lift, 0) * 0.6) * 100%), transparent);
   box-shadow: 0 4px 12px color-mix(in srgb, var(--lg-shadow) calc(var(--lg-lift, 0) * 100%), transparent), inset 0 0 0 0.5px var(--lg-edge);
@@ -238,7 +238,7 @@ body[data-theme] .unified-shell .rail[data-rim], body[data-theme] .topline[data-
   box-shadow: 0 6px 14px color-mix(in srgb, var(--lg-lens-drop) calc(var(--lg-lift, 0) * 100%), transparent), inset 0 0 0 0.5px var(--lg-edge);
   -webkit-backdrop-filter: var(--lg-filter, none) blur(0.5px) saturate(1.4);
   backdrop-filter: var(--lg-filter, none) blur(0.5px) saturate(1.4);
-  scale: calc(0.7 + 0.3 * var(--lg-lift, 0));
+  transform-origin: 50% 50%; will-change: transform, scale, opacity;
 }
 body[data-theme=light] .lg-range-lens { background-color: rgb(255 255 255 / 0.18); }
 .lg-range-lens[hidden] { display: none; }
@@ -292,3 +292,7 @@ html body[data-theme][data-material=blur] .unified-shell .main-panel {
 }
 html body[data-theme][data-material=blur] .unified-shell :is(.rail, .topline) > .glass-optics { display: none !important; }
 body[data-theme=dark][data-theme-variant=black] { --lg-panel-alpha: 70%; --lg-read-alpha: 84%; }
+
+/* 0.4.36: the slider lens reads as glass in both themes (rim ring + soft outer edge). */
+.lg-range-lens { box-shadow: 0 6px 16px color-mix(in srgb, rgb(0 0 0 / .25) calc(var(--lg-lift, 0) * 100%), transparent), inset 0 0 0 1px rgb(255 255 255 / .55), 0 0 0 1px rgb(0 0 0 / .08) !important; }
+body[data-theme=dark] .lg-range-lens { background-color: rgb(255 255 255 / .08); box-shadow: 0 6px 18px rgb(0 0 0 / calc(var(--lg-lift, 0) * .5)), inset 0 0 0 1px rgb(255 255 255 / .45), 0 0 0 1px rgb(0 0 0 / .3) !important; }

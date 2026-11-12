@@ -69,45 +69,65 @@
     G.press(el, e);
   }, { passive: true });
 
-  /* ---------- Slider: the thumb lifts into a glass lens over the track ---------- */
+  /* ---------- Slider: the thumb grows in place into a glass lens (Glisse slider) ----------
+   * At lift 0 the lens is exactly the thumb (same centre, same size); as the lift
+   * spring [2000, 80] rises it grows to 1.5x wide / 1.35x tall, the white thumb
+   * crossfades out and the track shows through the bending glass. It follows the
+   * value every frame with no CSS transition, so it never travels or jumps. */
   const lens = document.createElement('div');
-  lens.className = 'lg-range-lens'; lens.setAttribute('aria-hidden', 'true'); body.append(lens);
+  lens.className = 'lg-range-lens'; lens.setAttribute('aria-hidden', 'true'); lens.hidden = true; body.append(lens);
   const lensGlass = G.glass(lens, { bend: true, surface: false });
-  let held = null;
-  const lensLift = G.spring(0, 2000, 80, v => {
-    lens.style.setProperty('--lg-lift', v.toFixed(3));
-    lens.style.opacity = v > 0.01 ? '1' : '0';
-    lensGlass.lens?.update(v);
-    if (held) held.input.style.setProperty('--lg-lift', v.toFixed(3));
-    if (v <= 0.01 && !held) lens.hidden = true;
-  });
-  lens.hidden = true;
-  function fitLens() {
-    if (!held) return;
-    const el = held.input, b = el.getBoundingClientRect(), min = +el.min || 0, max = +el.max || 100;
+  let held = null, geo = null;
+  function thumbGeometry(el) {
+    const b = el.getBoundingClientRect(), cs = getComputedStyle(el), min = +el.min || 0, max = +el.max || 100;
     const p = max > min ? Math.max(0, Math.min(1, (+el.value - min) / (max - min))) : 0;
-    const thumb = parseFloat(getComputedStyle(el).getPropertyValue('--range-thumb-width')) || 30;
-    const w = thumb * 1.55, h = 26;
-    const x = b.left + thumb / 2 + (b.width - thumb) * p - w / 2, y = b.top + b.height / 2 - h / 2;
-    lens.style.cssText += `;width:${w}px;height:${h}px;transform:translate(${x}px,${y}px)`;
+    const tw = parseFloat(cs.getPropertyValue('--range-thumb-width')) || 32, th = parseFloat(cs.getPropertyValue('--range-thumb-height')) || 20;
+    const rtl = cs.direction === 'rtl', share = rtl ? 1 - p : p;
+    return { cx: b.left + tw / 2 + (b.width - tw) * share, cy: b.top + b.height / 2, tw, th };
   }
+  const W = 1.5, H = 1.35;
+  function paintLens(lift) {
+    if (!geo) return;
+    const w = geo.tw * W, h = geo.th * H;
+    // Size is the lifted size; scale shrinks it back onto the thumb at rest.
+    lens.style.width = w + 'px'; lens.style.height = h + 'px';
+    lens.style.transform = `translate(${geo.cx - w / 2}px, ${geo.cy - h / 2}px)`;
+    const sx = 1 / W + (1 - 1 / W) * lift, sy = 1 / H + (1 - 1 / H) * lift;
+    lens.style.scale = sx.toFixed(4) + ' ' + sy.toFixed(4);
+    lens.style.setProperty('--lg-lift', lift.toFixed(3));
+    lens.style.opacity = Math.min(1, lift * 3).toFixed(3);
+    if (held) held.input.style.setProperty('--lg-thumb-fade', Math.max(0, 1 - lift * 3).toFixed(3));
+  }
+  const lensLift = G.spring(0, 2000, 80, v => {
+    paintLens(v);
+    lensGlass.lens?.update(v);
+    if (v <= 0.005 && !held) { lens.hidden = true; geo = null; }
+  });
+  function follow() { if (held) { geo = thumbGeometry(held.input); paintLens(lensLift.value); } }
   document.addEventListener('pointerdown', e => {
     const input = e.target.closest?.('input[type=range]');
     if (!input || input.disabled || !e.isPrimary) return;
     held = { input, id: e.pointerId };
     if (!full()) return;
     input.setAttribute('data-lg-lifted', '');
-    lens.hidden = false; requestAnimationFrame(() => { fitLens(); lensGlass.dirty(); G.refitAll(); lensLift.set(1); });
+    // Place it on the thumb *before* it becomes visible.
+    geo = thumbGeometry(input); lensLift.jump(0); paintLens(0);
+    lens.hidden = false; lensGlass.dirty(); G.refitAll();
+    lensLift.set(1);
   }, { passive: true });
   const dropRange = e => {
     if (!held || (e && e.pointerId !== undefined && e.pointerId !== held.id)) return;
-    held.input.removeAttribute('data-lg-lifted'); held.input.style.removeProperty('--lg-lift');
-    held = null; lensLift.set(0);
+    const input = held.input; held = null;
+    lensLift.set(0);
+    // Thumb comes back as the lens settles onto it.
+    const restore = () => { if (!held || held.input !== input) { input.removeAttribute('data-lg-lifted'); input.style.removeProperty('--lg-thumb-fade'); } };
+    setTimeout(restore, 180);
   };
   for (const t of ['pointerup', 'pointercancel']) addEventListener(t, dropRange, { passive: true });
   addEventListener('blur', () => dropRange());
-  document.addEventListener('input', e => { if (held && e.target === held.input) fitLens(); }, true);
-  document.addEventListener('scroll', fitLens, { capture: true, passive: true });
+  document.addEventListener('input', e => { if (held && e.target === held.input) follow(); }, true);
+  addEventListener('pointermove', e => { if (held && e.pointerId === held.id) requestAnimationFrame(follow); }, { passive: true });
+  document.addEventListener('scroll', follow, { capture: true, passive: true });
 
   /* ---------- Eased card sizes: categories/creators and library products ---------- */
   const rootStyle = document.documentElement.style;

@@ -33,15 +33,20 @@
   const help = document.getElementById('glass-tune-help');
   if (!surface || !help) return;
   const solid = document.body.dataset.material === 'solid';
-  const refraction = document.body.dataset.refractionProof === 'passed';
   const message = solid ? 'Glass controls are paused while solid surfaces are active.'
-   : surface.value === 'desktop' ? 'Windows blurs the wallpaper behind the window. Bend and Dispersion shape every GumShelf lens (sidebar, sliders, segmented controls, this sample); Frost and Rim shape buttons, fields, menus, the sidebar and the top bar.'
-   : 'Bend, Dispersion, Frost and Rim apply live to buttons, search fields, menus and the sidebar lens. Press and hold a sidebar item to see the lens bend.';
+   : surface.value === 'desktop' ? "Windows blurs your wallpaper behind the window. These controls shape GumShelf's own glass."
+   : "These controls shape all of GumShelf's glass.";
   const helpText = message;
   if (help.textContent !== helpText) help.textContent = helpText;
   for (const control of controls) {
    const input = document.getElementById(inputId(control));
+   if (!input) continue;
    input.disabled = solid;
+   const value = parseFloat(document.body.style.getPropertyValue(control.css));
+   if (Number.isFinite(value) && input.valueAsNumber !== value) {
+    input.value = value;
+    window.GumRange?.paint(input);
+   }
    const output = document.getElementById(input.id + '-value');
    const text = input.value + (control.unit ? ' ' + control.unit : '');
    if (output.textContent !== text) output.textContent = text;
@@ -59,11 +64,16 @@
    + controls.map(control => {
     const id = inputId(control);
     const value = parseFloat(document.body.style.getPropertyValue(control.css));
-    return '<label for="' + id + '">' + control.label + '<input type="range" id="' + id
-     + '" min="' + control.min + '" max="' + control.max + '" step="' + control.step
-     + '" value="' + (Number.isFinite(value) ? value : control.initial) + '" aria-describedby="glass-tune-help">'
-     + '<output id="' + id + '-value" aria-hidden="true"></output></label>';
-   }).join('') + '<p id="glass-tune-help" class="note"></p>';
+    const affects = ['refraction','dispersion'].includes(control.id)
+     ? 'sidebar selection (while pressed) · slider thumb (while held) · Find/Plan and Brightness switches · the sample above'
+     : 'buttons · search fields · menus and dropdowns · sidebar · top bar · main panel · footer';
+    return '<label for="' + esc(id) + '">' + esc(control.label) + '<input type="range" id="' + esc(id)
+     + '" min="' + esc(control.min) + '" max="' + esc(control.max) + '" step="' + esc(control.step)
+     + '" value="' + esc(Number.isFinite(value) ? value : control.initial) + '" aria-describedby="' + esc(id) + '-help glass-tune-help">'
+     + '<output id="' + esc(id) + '-value" aria-hidden="true"></output></label>'
+     + '<p id="' + esc(id) + '-help" class="glass-control-help"><span>' + esc(control.help)
+     + '</span> <span class="glass-affects">Affects: ' + esc(affects) + '</span></p>';
+   }).join('') + '<p id="glass-tune-help" class="note"></p><button type="button" class="btn text small" data-action="glass-reset">Reset glass</button>';
   surface.closest('.field').after(area);
   sync();
  }
@@ -91,6 +101,20 @@
    window.GumRange?.paint(event.target);
    sync();
    window.toast?.(error.message);
+  }
+ });
+ root.addEventListener('click', async event => {
+  const button = event.target.closest('[data-action="glass-reset"]');
+  if (!button || button.disabled) return;
+  button.disabled = true;
+  try {
+   await window.GumUpdateAppearance(Object.fromEntries(controls.map(control => [control.key,control.initial])));
+  } catch (error) {
+   window.GumApplyAppearance();
+   window.toast?.(error.message);
+  } finally {
+   sync();
+   button.disabled = false;
   }
  });
  new MutationObserver(decorate).observe(root,{childList:true,subtree:true});

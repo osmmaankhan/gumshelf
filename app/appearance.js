@@ -9,10 +9,10 @@
  function normalizeSurface(value){return ['desktop','lens','solid'].includes(value)?value:'desktop';}
  function normalizeAccent(value){return typeof value==='string'&&/^#[0-9a-f]{6}$/i.test(value)?value.toUpperCase():null;}
  const glassControls = [
-  { key: 'glassRefraction', id: 'refraction', label: 'Bend', min: 0, max: 12, step: 1, initial: 12, css: '--glass-displacement', unit: '' },
-  { key: 'glassDispersion', id: 'dispersion', label: 'Dispersion', min: 0, max: 1, step: 0.05, initial: 0.5, css: '--glass-dispersion', unit: '' },
-  { key: 'glassFrost', id: 'frost', label: 'Frost', min: 0, max: 16, step: 0.5, initial: 3, css: '--glass-frost', unit: 'px' },
-  { key: 'glassRim', id: 'rim', label: 'Rim', min: 0, max: 1, step: 0.05, initial: 0.45, css: '--glass-rim', unit: '' }
+  { key: 'glassRefraction', id: 'refraction', label: 'Bend', help: 'How strongly glass lenses bend what is behind them.', min: 0, max: 12, step: 1, initial: 12, css: '--glass-displacement', unit: '' },
+  { key: 'glassDispersion', id: 'dispersion', label: 'Dispersion', help: 'The rainbow split at the edge of a lens.', min: 0, max: 1, step: 0.05, initial: 0.5, css: '--glass-dispersion', unit: '' },
+  { key: 'glassFrost', id: 'frost', label: 'Frost', help: 'How much glass blurs what is behind it.', min: 0, max: 16, step: 0.5, initial: 3, css: '--glass-frost', unit: 'px' },
+  { key: 'glassRim', id: 'rim', label: 'Rim', help: 'The light catching the edge of glass.', min: 0, max: 1, step: 0.05, initial: 0.45, css: '--glass-rim', unit: '' }
  ];
  function appearancePatch(patch){const result={};for(const {key,max} of glassControls)if(Object.hasOwn(patch,key)){const value=patch[key];if(value!==null&&(!Number.isFinite(value)||value<0||value>max))throw Error('Choose an available glass setting.');result[key]=value;}if(Object.hasOwn(patch,'windowSurface')){if(!['desktop','lens','solid'].includes(patch.windowSurface))throw Error('Choose Desktop glass, In-app lens or Solid.');result.windowSurface=patch.windowSurface;}if(Object.hasOwn(patch,'accent')){if(patch.accent!==null&&!normalizeAccent(patch.accent))throw Error('Choose a valid six-digit accent color.');result.accent=normalizeAccent(patch.accent);}return result;}
  function luminance(hex){return hex.slice(1).match(/../g).map(v=>parseInt(v,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);}

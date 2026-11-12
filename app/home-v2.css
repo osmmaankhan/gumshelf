@@ -305,3 +305,74 @@ body[data-theme=dark] .home-aurora::before, body[data-theme=dark] .home-aurora::
 body[data-theme=dark] .home-aurora { background: transparent; }
 body[data-theme] .home-prompt { z-index: 6; }
 body[data-theme] .home-prompt :is(.search-suggest, .creator-suggest) { top: calc(100% + 62px); }
+
+/* ================= 0.4.36 review ================= */
+
+/* No rule lines on Home: separation comes from spacing alone. */
+body[data-theme] .home-shapes { border-bottom: 0 !important; height: 84px; margin-top: 18px; }
+body[data-theme] :is(.home-shelf, .home-quote-strip) { border-top: 0 !important; padding-top: 0; }
+body[data-theme] .home-shelf { margin-top: 34px; }
+body[data-theme] .home-quote-strip { margin-top: 26px; }
+
+/* The hero fills the whole reading panel — no dead strip at the sides — and ends right after the shapes. */
+body[data-theme] .main-panel:has(> .home-v2), body[data-theme] .main-panel:has(.home-v2) { padding-inline: 0 !important; padding-top: 0 !important; }
+body[data-theme] .home-v2 { max-width: none !important; width: 100%; margin: 0 !important; }
+body[data-theme] .home-v2 .home-hero { min-height: 0 !important; padding-bottom: 6px; width: 100%; }
+body[data-theme] .home-aurora { inset: 0; }
+
+/* Headline: masks reveal the words but never cut ascenders or descenders (the g in "making"). */
+body[data-theme] .home-word { padding: 0.08em 0.02em 0.22em; margin: -0.08em -0.02em -0.22em; }
+
+/* Stitch-style living dot grid: brighter dots follow the pointer and a slow light sweeps across when idle. */
+body[data-theme] .home-v2 .home-hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit;
+  background: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--color-text) 46%, transparent) 1.1px, transparent 1.6px) 0 0 / 18px 18px;
+  -webkit-mask-image:
+    radial-gradient(circle 220px at calc(50% + var(--mx, 0) * 50%) calc(45% + var(--my, 0) * 45%), #000 0%, transparent 75%),
+    linear-gradient(100deg, transparent 0%, transparent 40%, rgb(0 0 0 / .55) 50%, transparent 60%, transparent 100%);
+  mask-image:
+    radial-gradient(circle 220px at calc(50% + var(--mx, 0) * 50%) calc(45% + var(--my, 0) * 45%), #000 0%, transparent 75%),
+    linear-gradient(100deg, transparent 0%, transparent 40%, rgb(0 0 0 / .55) 50%, transparent 60%, transparent 100%);
+  -webkit-mask-size: 100% 100%, 300% 100%; mask-size: 100% 100%, 300% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: 0 0, 100% 0; mask-position: 0 0, 100% 0;
+}
+body[data-motion=full] .home-v2 .home-hero::after { animation: dot-sweep 9s ease-in-out infinite; }
+@keyframes dot-sweep { 0% { -webkit-mask-position: 0 0, 100% 0; mask-position: 0 0, 100% 0; } 100% { -webkit-mask-position: 0 0, 0% 0; mask-position: 0 0, 0% 0; } }
+body[data-theme=dark] .home-v2 .home-hero::after { background-image: radial-gradient(circle at 1px 1px, rgb(255 255 255 / .55) 1.1px, transparent 1.6px); }
+@media (prefers-reduced-motion: reduce) { body[data-theme] .home-v2 .home-hero::after { animation: none !important; } }
+@media (forced-colors: active) { body[data-theme] .home-v2 .home-hero::after { display: none; } }
+
+/* Cards sit on the page with a soft shadow behind them. */
+body[data-theme] :is(.product, .category-card, .creator-card) {
+  box-shadow: 0 1px 2px rgb(20 20 40 / .05), 0 10px 28px -14px rgb(20 20 40 / .28) !important;
+  transition: box-shadow 220ms ease, translate 220ms var(--lg-ease-out, ease-out);
+}
+body[data-theme=dark] :is(.product, .category-card, .creator-card) { box-shadow: 0 1px 2px rgb(0 0 0 / .4), 0 12px 30px -14px rgb(0 0 0 / .7) !important; }
+@media (hover: hover) and (pointer: fine) {
+  body[data-theme] :is(.product, .category-card, .creator-card):hover { box-shadow: 0 2px 4px rgb(20 20 40 / .06), 0 18px 40px -16px rgb(20 20 40 / .34) !important; }
+  body[data-motion=full] :is(.category-card, .creator-card):hover { translate: 0 -2px; }
+}
+body[data-theme] .product.selected { box-shadow: var(--lg-halo), 0 10px 28px -14px rgb(20 20 40 / .28) !important; }
+body[data-theme] .home-card-art { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text) 6%, transparent), 0 10px 26px -14px rgb(20 20 40 / .32); }
+body[data-theme=dark] .home-card-art { box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06), 0 12px 28px -14px rgb(0 0 0 / .7); }
+
+/* No-preview cover: the category's colour, icon and name instead of a stray word. */
+body[data-theme] .cover-placeholder {
+  position: relative; display: grid; place-items: center; align-content: center; gap: 8px; width: 100%; height: 100%; min-height: 100%;
+  color: color-mix(in srgb, var(--type-color, var(--color-accent)) 70%, var(--color-text));
+  background:
+    radial-gradient(120% 90% at 20% 10%, color-mix(in srgb, var(--type-color, var(--color-accent)) 26%, transparent), transparent 60%),
+    radial-gradient(90% 80% at 90% 100%, color-mix(in srgb, var(--type-color, var(--color-accent)) 16%, transparent), transparent 65%),
+    color-mix(in srgb, var(--type-color, var(--color-accent)) 7%, var(--color-surface));
+  border-radius: inherit; overflow: hidden;
+}
+body[data-theme] .cover-placeholder-icon svg { width: 30px; height: 30px; stroke-width: 1.6; }
+body[data-theme] .cover-placeholder-label { font-size: 12px; font-weight: 600; letter-spacing: .01em; opacity: .85; }
+body[data-theme] .search-suggest-art .cover-placeholder { width: 34px; height: 34px; border-radius: 8px; }
+body[data-theme] .search-suggest-art .cover-placeholder-label { display: none; }
+body[data-theme] .search-suggest-art .cover-placeholder-icon svg { width: 16px; height: 16px; }
+/* An old rule capped .home-hero at 960px; the hero now spans the reading panel edge to edge. */
+body[data-theme] .home-v2 .home-hero { max-width: none !important; margin-inline: 0 !important; box-sizing: border-box; }
+/* The Home dropdown is fully opaque so the chips under it never show through. */
+body[data-theme] .home-prompt :is(.search-suggest, .creator-suggest) { background: var(--color-raised) !important; }

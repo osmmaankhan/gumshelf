@@ -38,7 +38,8 @@ function checkGlassProof(){if(!proofReady||proofAttempted||nativeAppearance.tran
 function snapshot(){BookQuotes.configure(quoteStore.doc.quotes);return {...state,quoteLibrary:quoteStore.snapshot(),scanHistory:history.list(),quality:qualityCounts(state.products),canResume:canResume(state.scan),resolvedTheme:nativeTheme.shouldUseDarkColors?'dark':'light',reducedTransparency:nativeAppearance.transparency===null?null:!nativeAppearance.transparency,nativeAppearance,connected:!!bridge?.connected,helper:bridge?.info,running:!!(scanner?.running||scanner?.finishing),dataPath:dir,loadError};}
 function send(){if(win&&!win.isDestroyed())win.webContents.send('state-changed',snapshot());}
 function handle(name,fn){ipcMain.handle(name,async(e,...args)=>{if(e.sender!==win.webContents||e.senderFrame.url!==pathToFileURL(path.join(__dirname,'app/index.html')).href)throw Error('Untrusted request');return fn(...args);});}
-app.setAppUserModelId('local.gumshelf.desktop');
+// Development runs use their own taskbar identity so they never take over the installed app's icon.
+app.setAppUserModelId(app.isPackaged?'local.gumshelf.desktop':'local.gumshelf.dev');
 app.whenReady().then(async()=>{
  // No default Electron menu: it added page zoom (fighting GumShelf's own Ctrl+wheel sizing), reload and DevTools shortcuts.
  Menu.setApplicationMenu(null);
