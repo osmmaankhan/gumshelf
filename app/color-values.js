@@ -1,0 +1,10 @@
+(function(root){
+ const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+ function hex(r,g,b){return '#'+[r,g,b].map(n=>Math.round(clamp(n,0,255)).toString(16).padStart(2,'0')).join('').toUpperCase();}
+ function rgb(value){const x=String(value).replace(/^#/,'');if(!/^[0-9a-f]{6}$/i.test(x))throw Error('Enter a six-digit HEX color.');return x.match(/../g).map(v=>parseInt(v,16));}
+ function hsl(value){const [r,g,b]=rgb(value).map(v=>v/255),hi=Math.max(r,g,b),lo=Math.min(r,g,b),d=hi-lo,l=(hi+lo)/2;let h=0;if(d){h=hi===r?((g-b)/d)%6:hi===g?(b-r)/d+2:(r-g)/d+4;h=(h*60+360)%360;}return [h,d?d/(1-Math.abs(2*l-1))*100:0,l*100];}
+ function fromHsl(h,s,l){h=((h%360)+360)%360;s=clamp(s,0,100)/100;l=clamp(l,0,100)/100;const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs(h/60%2-1)),m=l-c/2;const v=h<60?[c,x,0]:h<120?[x,c,0]:h<180?[0,c,x]:h<240?[0,x,c]:h<300?[x,0,c]:[c,0,x];return hex(...v.map(n=>(n+m)*255));}
+ function parse(value,type='HEX'){if(!['HEX','RGB','HSL'].includes(type))throw Error('Choose HEX, RGB or HSL.');value=String(value).trim();if(type==='HEX'){if(/^#[0-9a-f]{3}$/i.test(value))value='#'+value.slice(1).split('').map(c=>c+c).join('');return hex(...rgb(value));}const expected=type==='RGB'?'rgb':'hsl',plain=value.replace(new RegExp('^'+expected+'\\(','i'),'').replace(/\)$/,'').replace(/%/g,'');const parts=plain.split(/[\s,]+/).filter(Boolean).map(Number);if(parts.length!==3||parts.some(n=>!Number.isFinite(n)))throw Error('Enter three valid '+type+' values.');const limits=type==='RGB'?[255,255,255]:[360,100,100];if(parts.some((n,i)=>n<0||n>limits[i]))throw Error('Color values are outside the '+type+' range.');return type==='RGB'?hex(...parts):fromHsl(...parts);}
+ function format(value,type='HEX'){if(type==='HEX')return hex(...rgb(value));if(type==='RGB')return 'rgb('+rgb(value).join(', ')+')';return 'hsl('+hsl(value).map((n,i)=>Number(n.toFixed(2))+(i?'%':'')).join(', ')+')';}
+ const api={rgb,hex,hsl,fromHsl,parse,format};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.GumColorValues=api;
+})(globalThis);

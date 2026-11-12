@@ -1,0 +1,29 @@
+/* Shared opaque selection within the single native/in-page optical plane. */
+:root { view-transition-name:none; }
+body[data-theme] .rail .navigation-selection { position:absolute; top:var(--space-zero); left:var(--space-zero); pointer-events:none; border:var(--space-hairline) solid var(--color-border); border-radius:var(--radius-pill); background:var(--color-raised); }
+body[data-theme] .rail .nav.active { background:transparent!important; border-color:transparent!important; }
+body[data-theme] .rail .nav { transition:color var(--motion-hover) var(--motion-ease-out); }
+body[data-theme] .rail .nav.active svg { color:var(--color-accent); }
+/* Component motion uses the same easing family. */
+:root {
+ --motion-ease-out:cubic-bezier(0.23,1,0.32,1);
+ --motion-ease-move:cubic-bezier(0.77,0,0.175,1);
+ --motion-press:110ms;
+ --motion-release:150ms;
+ --motion-morph:180ms;
+ --motion-sheet-enter:210ms;
+ --motion-menu-enter:160ms;
+ --motion-menu-exit:120ms;
+}
+body[data-motion=full] .main-panel[data-pointer-navigation] {
+ animation:workspace-reveal 140ms var(--motion-ease-out) both;
+}
+@keyframes workspace-reveal { from {opacity:.92;} to {opacity:1;} }
+@media (prefers-reduced-motion:reduce) {
+ body[data-motion=full] .main-panel[data-pointer-navigation] { animation:none; }
+}
+@media (forced-colors:active) {
+ body[data-theme] .rail .navigation-selection { background:Highlight; border-color:Highlight; }
+ body[data-theme] .rail .nav.active { color:HighlightText!important; }
+ body[data-theme] .rail .nav.active svg { color:HighlightText; }
+}

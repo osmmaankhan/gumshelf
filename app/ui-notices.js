@@ -1,0 +1,6 @@
+(function(){
+ let running=false;const notice=document.createElement('aside');notice.id='task-notice';notice.className='task-notice';notice.hidden=true;notice.setAttribute('aria-live','polite');document.body.append(notice);
+ function seed(s){running=!!s.running;}
+ function update(s){const finished=running&&!s.running;running=!!s.running;if(running)notice.hidden=true;if(!finished||!s.settings?.notifications)return;const scan=s.scan||{},title=['error','failed'].includes(scan.status)?'Scan needs attention.':scan.status==='partial'?'Scan finished with details to check.':scan.status==='cancelled'?'Scan stopped.':'Your library update is ready.';notice.innerHTML='<img src="../../branding/app-icon.png" alt=""><div><strong></strong><p></p></div><button class="icon-button" aria-label="Dismiss notification"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'+window.GumVisuals.glyphs.close+'</svg></button>';notice.querySelector('strong').textContent=title;notice.querySelector('p').textContent=scan.message||((scan.processed||0)+' products checked.');notice.querySelector('img').addEventListener('error',e=>{e.target.src='brand.png';},{once:true});notice.querySelector('button').onclick=()=>{notice.hidden=true;};notice.hidden=false;}
+ window.GumNotices={seed,update};
+})();

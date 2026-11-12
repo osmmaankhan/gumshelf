@@ -1,0 +1,119 @@
+/* Geometry correction pass: active project tokens only, no animation changes. */
+body[data-theme] .main-panel { --content-gutter:var(--space-xl); }
+body[data-theme] .page-heading { padding:var(--space-xl) var(--content-gutter) var(--space-section); gap:var(--space-lg); flex-wrap:wrap; }
+body[data-theme] :is(.toolbar,.filters,.resource-filters,.saved-collections,.resource-options) { padding-inline:var(--content-gutter); gap:var(--space-md); }
+body[data-theme] .toolbar { padding-bottom:var(--space-lg); flex-wrap:wrap; }
+body[data-theme] .resource-options { padding-bottom:var(--space-lg); gap:var(--space-sm) var(--space-lg); }
+body[data-theme] .collection { padding-inline:var(--content-gutter); padding-bottom:var(--space-section); }
+body[data-theme] :is(.section-label,.collection-heading) { gap:var(--space-md); flex-wrap:wrap; margin-bottom:var(--space-lg); }
+body[data-theme] :is(.product-list,.category-grid,.creator-grid) { gap:var(--space-lg); }
+body[data-theme] .category-grid { margin-top:var(--space-section); }
+body[data-theme] :is(.category-tools,.creator-tools) { gap:var(--space-lg); margin-bottom:var(--space-md); flex-wrap:wrap; }
+body[data-theme] .category-tools .search-wrap { min-width:var(--size-toolbar); }
+body[data-theme] :is(.category-size,.creator-tools>label,.resource-options label) { gap:var(--space-sm); flex-wrap:wrap; }
+body[data-theme] :is(.creator-card,.category-card,.settings-card) { border-radius:var(--radius-card); padding:var(--space-gutter); }
+body[data-theme] :is(.settings-grid,.review-grid) { gap:var(--space-section); }
+body[data-theme] :is(.settings-card,.review-grid section) h3 { margin-bottom:var(--space-md); }
+body[data-theme] .field { margin-block:var(--space-lg); gap:var(--space-sm); }
+body[data-theme] :is(.field input,.field select,.field textarea) { padding:var(--space-sm) var(--space-md); }
+body[data-theme] :is(.review-grid textarea,.field textarea) { border-radius:var(--radius-control); }
+body[data-theme] .btn { gap:var(--space-sm); }
+body[data-theme] .row-actions { gap:var(--space-sm); margin-right:var(--space-zero); }
+body[data-theme] .with-detail .row-actions .quiet { display:inline-flex; }
+body[data-theme] .select-row { min-width:var(--size-compact); min-height:var(--size-default); justify-content:center; margin:var(--space-zero); }
+body[data-theme] .select-row input { width:var(--size-icon-large); height:var(--size-icon-large); margin:var(--space-zero); }
+/* Circular offset rule: outer 24 minus padding 8 minus border 1 = inner 15. */
+body[data-theme] .product { --product-radius:var(--radius-hero); --product-inset:var(--space-sm); border-radius:var(--product-radius); padding:var(--product-inset); gap:var(--space-lg); }
+body[data-theme] .cover-button { border-radius:max(var(--space-zero),calc(var(--product-radius) - var(--product-inset) - var(--space-hairline))); }
+body[data-theme] :is(.cover-button,.hero-cover) :is(img,.art) { border-radius:inherit; }
+/* Detail is a solid, flush reading region, not a floating overlay. */
+body[data-theme] .detail { position:relative; inset:auto; z-index:auto; width:var(--layout-min-width); max-width:100%; padding:var(--space-gutter); border:var(--space-zero); border-left:var(--space-hairline) solid var(--color-border); border-radius:var(--space-zero); box-shadow:none; }
+body[data-theme] .detail-top { padding-bottom:var(--space-lg); gap:var(--space-md); }
+body[data-theme] .hero-cover { border-radius:var(--radius-card); }
+body[data-theme] .gallery-controls { gap:var(--space-md); margin:var(--space-md) var(--space-zero) var(--space-section); }
+body[data-theme] .detail-section { margin-top:var(--space-section); }
+body[data-theme] .detail-section h3 { margin-bottom:var(--space-sm); }
+body[data-theme] .detail-actions { margin-top:var(--space-section); gap:var(--space-sm); }
+body[data-theme] .use-box { padding:var(--space-lg); border-radius:var(--radius-card); }
+body[data-theme] dialog { padding:var(--space-section); border-radius:var(--radius-dialog); max-height:calc(100% - var(--space-section) - var(--space-section)); overflow-y:auto; }
+body[data-theme] .modal-title { gap:var(--space-lg); margin-bottom:var(--space-lg); }
+body[data-theme] .modal-title h2 { overflow-wrap:anywhere; }
+body[data-theme] :is(.review-preview,.quote-manager-row,.connection-status,.hidden-notice,.scan-error) { border-radius:var(--radius-card); padding:var(--space-lg); }
+body[data-theme] .quote-manager-row>div { flex-wrap:wrap; gap:var(--space-sm); }
+body[data-theme] :is(.scan-banner,.scan-recovery) { margin-inline:var(--content-gutter); }
+body[data-theme] .scan-controls { gap:var(--space-md); flex-wrap:wrap; }
+body[data-theme] :is(.btn,.icon-button,.nav,.category-mark) svg { display:block; flex-shrink:0; stroke-width:var(--icon-stroke); stroke-linecap:round; stroke-linejoin:round; fill:none; overflow:visible; }
+body[data-theme] :is(.btn,.icon-button,.nav,.category-mark) svg { width:var(--size-icon); height:var(--size-icon); }
+body[data-theme] .search-wrap svg { left:var(--space-lg); top:50%; transform:translateY(-50%); }
+body[data-theme] .search { padding-left:calc(var(--space-lg) + var(--size-icon) + var(--space-md)); }
+/* Exact layout.wide token: native CSS variables are unavailable in media conditions. */
+@media (max-width:960px) {
+ body[data-theme] .detail { width:auto; border-left:none; border-bottom:var(--space-hairline) solid var(--color-border); }
+ body[data-theme] .main-panel { --content-gutter:var(--space-gutter); }
+ body[data-theme] :is(.settings-grid,.review-grid) { grid-template-columns:minmax(var(--space-zero),1fr); }
+}
+/* Small windows use one content scroller: details first, then the product list. */
+@media (max-width:960px) {
+ body[data-theme] .content-area.with-detail { flex-direction:column; overflow-y:auto; }
+ body[data-theme] .with-detail .detail { order:-1; flex:0 0 auto; overflow:visible; }
+ body[data-theme] .with-detail .collection { flex:0 0 auto; overflow:visible; padding-top:var(--space-section); }
+}
+/* Remaining secondary surfaces follow the same role and spacing scale. */
+body[data-theme] .quote-books { border-radius:var(--radius-control); padding:var(--space-md); gap:var(--space-md); }
+body[data-theme] .quote-library-actions { gap:var(--space-sm); margin-block:var(--space-lg); }
+body[data-theme] .quote-edit-grid { gap:var(--space-zero) var(--space-lg); }
+body[data-theme] .quote-manager-dialog { max-width:var(--layout-wide); }
+body[data-theme] .quote-manager-list { margin-block:var(--space-lg); gap:var(--space-md); }
+body[data-theme] .quote-manager-row small { margin-block:var(--space-sm); }
+body[data-theme] .detail h2 { margin-bottom:var(--space-md); }
+body[data-theme] .tags { gap:var(--space-xs); }
+body[data-theme] .tag { padding:var(--space-xs) var(--space-sm); }
+body[data-theme] .creator-label { gap:var(--space-xs); }
+body[data-theme] .scan-controls { margin-top:var(--space-section)!important; }
+body[data-theme] #toast { border-radius:var(--radius-card); padding:var(--space-md) var(--space-gutter); }
+
+/* Compact desktop rhythm. Text can wrap and touch layouts keep larger targets. */
+body[data-theme] .main-panel { --content-gutter:var(--space-gutter); }
+body[data-theme] .page-heading {
+ padding-block:var(--space-lg) var(--space-md);
+ gap:var(--space-sm) var(--space-lg);
+}
+body[data-theme] :is(.toolbar,.resource-options) { padding-bottom:var(--space-sm); }
+body[data-theme] :is(.toolbar,.resource-options,.resource-filters,.saved-collections) {
+ gap:var(--space-xs) var(--space-sm);
+}
+body[data-theme] :is(.collection-heading,.section-label) { margin-bottom:var(--space-sm); }
+body[data-theme] :is(.product-list,.category-grid,.creator-grid) { gap:var(--space-sm); }
+body[data-theme] :is(.category-card,.creator-card,.settings-card) { padding:var(--space-lg); }
+body[data-theme] :is(.settings-grid,.review-grid) { gap:var(--space-lg); }
+body[data-theme] .field { margin-block:var(--space-md); }
+body[data-theme] .product { min-height:0; gap:var(--space-md); }
+body[data-theme] .cover-button { width:clamp(64px,10vw,112px); height:auto; aspect-ratio:28/19; flex:none; }
+body[data-theme] .product-copy { min-width:0; overflow-wrap:anywhere; }
+body[data-theme] .row-actions { gap:var(--space-xs); }
+body[data-theme] .detail-section { margin-top:var(--space-lg); }
+
+@media not (pointer:coarse) {
+ body[data-theme] .rail-nav { gap:var(--space-xs); margin-top:var(--space-lg); }
+ body[data-theme] .rail-bottom { gap:var(--space-xs); }
+ body[data-theme] .rail .nav {
+  min-height:var(--size-default);
+  padding-block:var(--space-tiny);
+  gap:var(--space-tiny);
+ }
+ body[data-theme] .rail .nav svg { width:var(--size-icon-small); height:var(--size-icon-small); }
+ body[data-theme] :is(.toolbar,.resource-options,.home-results-tools,.category-tools,.creator-tools)
+ :is(input.search,select.select,button.btn) {
+  min-height:36px;
+  height:auto;
+  padding-block:var(--space-xs);
+ }
+ body[data-theme] .row-actions .icon-button { width:var(--size-compact); height:var(--size-compact); }
+ body[data-theme] .select-row { min-height:var(--size-compact); }
+}
+
+@media (max-width:768px) {
+ body[data-theme] .main-panel:has(> .content-area) { overflow-y:auto; }
+ body[data-theme] .main-panel > .content-area { flex:none; overflow:visible; }
+ body[data-theme] .main-panel > .content-area .collection { overflow:visible; }
+}

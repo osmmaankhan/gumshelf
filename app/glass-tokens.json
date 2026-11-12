@@ -1,0 +1,23 @@
+{
+  "status": "Approved for bounded navigation integration on 26 October 2026; original design tokens unchanged; controlled-canvas contrast gate and runtime pixel proof required",
+  "tokens": {
+    "glass.lensBlur": {
+      "value": 3,
+      "unit": "px",
+      "label": "ESTIMATED",
+      "source": "Convx NavBlurDp adapted from dp to CSS px"
+    },
+    "color.light.lensTint": {
+      "value": "rgba(245,245,247,0.40)",
+      "unit": "color",
+      "label": "ESTIMATED",
+      "source": "Convx glass base and base-surface opacity; contrast-gated candidate"
+    },
+    "color.dark.lensTint": {
+      "value": "rgba(255,255,255,0.15)",
+      "unit": "color",
+      "label": "ESTIMATED",
+      "source": "Convx dark glass base and opacity; controlled-dark-backdrop candidate only"
+    }
+  }
+}

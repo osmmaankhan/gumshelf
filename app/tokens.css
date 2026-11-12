@@ -1,0 +1,385 @@
+/* GENERATED from tokens.json. Run npm run build:tokens. */
+:root {
+  /* space.zero | ESTIMATED | unit: px | source: project, hig-css */
+  --space-zero: 0px;
+  /* space.hairline | ESTIMATED | unit: px | source: project, hig-css */
+  --space-hairline: 1px;
+  /* space.tiny | ESTIMATED | unit: px | source: project, hig-css */
+  --space-tiny: 2px;
+  /* space.xs | ESTIMATED | unit: px | source: project, hig-css */
+  --space-xs: 4px;
+  /* space.sm | ESTIMATED | unit: px | source: project, hig-css */
+  --space-sm: 8px;
+  /* space.md | ESTIMATED | unit: px | source: project, hig-css */
+  --space-md: 12px;
+  /* space.lg | ESTIMATED | unit: px | source: project, hig-css */
+  --space-lg: 16px;
+  /* space.gutter | ESTIMATED | unit: px | source: project, hig-css */
+  --space-gutter: 20px;
+  /* space.section | ESTIMATED | unit: px | source: project, hig-css */
+  --space-section: 24px;
+  /* space.xl | ESTIMATED | unit: px | source: project, hig-css */
+  --space-xl: 32px;
+  /* space.xxl | ESTIMATED | unit: px | source: project, hig-css */
+  --space-xxl: 40px;
+  /* space.large | ESTIMATED | unit: px | source: project, hig-css */
+  --space-large: 48px;
+  /* space.huge | ESTIMATED | unit: px | source: project, hig-css */
+  --space-huge: 64px;
+  /* radius.control | ESTIMATED | unit: px | source: project, convx-apple, hig-css */
+  --radius-control: 8px;
+  /* radius.card | ESTIMATED | unit: px | source: project, convx-apple, hig-css */
+  --radius-card: 14px;
+  /* radius.panel | ESTIMATED | unit: px | source: project, convx-apple, hig-css */
+  --radius-panel: 18px;
+  /* radius.dialog | ESTIMATED | unit: px | source: project, convx-apple, hig-css */
+  --radius-dialog: 20px;
+  /* radius.hero | ESTIMATED | unit: px | source: project, convx-apple, hig-css */
+  --radius-hero: 24px;
+  /* radius.pill | ESTIMATED | unit: px | source: project, convx-apple, hig-css */
+  --radius-pill: 9999px;
+  /* size.compact | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-compact: 32px;
+  /* size.default | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-default: 40px;
+  /* size.touch | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-touch: 48px;
+  /* size.row | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-row: 44px;
+  /* size.toolbar | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-toolbar: 56px;
+  /* size.iconSmall | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-icon-small: 16px;
+  /* size.icon | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-icon: 20px;
+  /* size.iconLarge | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-icon-large: 24px;
+  /* size.focusWidth | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-focus-width: 2px;
+  /* size.focusOffset | ESTIMATED | unit: px | source: project, ms-touch */
+  --size-focus-offset: 3px;
+  /* layout.sidebar | ESTIMATED | unit: px | source: project */
+  --layout-sidebar: 240px;
+  /* layout.compact | ESTIMATED | unit: px | source: project */
+  --layout-compact: 640px;
+  /* layout.wide | ESTIMATED | unit: px | source: project */
+  --layout-wide: 960px;
+  /* layout.maxContent | ESTIMATED | unit: px | source: project */
+  --layout-max-content: 1280px;
+  /* layout.minWidth | ESTIMATED | unit: px | source: project */
+  --layout-min-width: 360px;
+  /* layout.minHeight | ESTIMATED | unit: px | source: project */
+  --layout-min-height: 480px;
+  /* layout.windowWidth | ESTIMATED | unit: px | source: project */
+  --layout-window-width: 1100px;
+  /* layout.windowHeight | ESTIMATED | unit: px | source: project */
+  --layout-window-height: 760px;
+  /* type.caption | ESTIMATED | unit: px | source: project, convx-apple, apple-typography */
+  --type-caption: 12px;
+  /* type.metadata | ESTIMATED | unit: px | source: project, convx-apple, apple-typography */
+  --type-metadata: 13px;
+  /* type.body | ESTIMATED | unit: px | source: project, convx-apple, apple-typography */
+  --type-body: 14px;
+  /* type.control | ESTIMATED | unit: px | source: project, convx-apple, apple-typography */
+  --type-control: 14px;
+  /* type.section | ESTIMATED | unit: px | source: project, convx-apple, apple-typography */
+  --type-section: 22px;
+  /* type.title | ESTIMATED | unit: px | source: project, convx-apple, apple-typography */
+  --type-title: 34px;
+  /* leading.caption | ESTIMATED | unit: px | source: project, convx-apple */
+  --leading-caption: 16px;
+  /* leading.metadata | ESTIMATED | unit: px | source: project, convx-apple */
+  --leading-metadata: 18px;
+  /* leading.body | ESTIMATED | unit: px | source: project, convx-apple */
+  --leading-body: 20px;
+  /* leading.control | ESTIMATED | unit: px | source: project, convx-apple */
+  --leading-control: 20px;
+  /* leading.section | ESTIMATED | unit: px | source: project, convx-apple */
+  --leading-section: 28px;
+  /* leading.title | ESTIMATED | unit: px | source: project, convx-apple */
+  --leading-title: 41px;
+  /* weight.regular | ESTIMATED | unit: number | source: project */
+  --weight-regular: 400;
+  /* weight.medium | ESTIMATED | unit: number | source: project */
+  --weight-medium: 500;
+  /* weight.semibold | ESTIMATED | unit: number | source: project */
+  --weight-semibold: 600;
+  /* weight.bold | ESTIMATED | unit: number | source: project */
+  --weight-bold: 700;
+  /* type.tracking | ESTIMATED | unit: em | source: project */
+  --type-tracking: 0em;
+  /* icon.stroke | ESTIMATED | unit: number | source: project */
+  --icon-stroke: 1.75;
+  /* icon.viewbox | ESTIMATED | unit: number | source: project */
+  --icon-viewbox: 24;
+  /* font.family | ESTIMATED | unit: css | source: project */
+  --font-family: "Segoe UI Variable", "Segoe UI", Inter, system-ui, sans-serif;
+  /* color.light.canvas | ESTIMATED | unit: color | source: project */
+  --color-light-canvas: #F5F5F7;
+  /* color.light.surface | ESTIMATED | unit: color | source: project */
+  --color-light-surface: #FFFFFF;
+  /* color.light.raised | ESTIMATED | unit: color | source: project */
+  --color-light-raised: #FFFFFF;
+  /* color.light.text | ESTIMATED | unit: color | source: project */
+  --color-light-text: #171717;
+  /* color.light.secondary | ESTIMATED | unit: color | source: project */
+  --color-light-secondary: #53535B;
+  /* color.light.border | ESTIMATED | unit: color | source: project */
+  --color-light-border: #73737D;
+  /* color.light.accent | ESTIMATED | unit: color | source: project */
+  --color-light-accent: #B51536;
+  /* color.light.onAccent | ESTIMATED | unit: color | source: project */
+  --color-light-on-accent: #FFFFFF;
+  /* color.light.focus | ESTIMATED | unit: color | source: project */
+  --color-light-focus: #005FCC;
+  /* color.light.glassTint | ESTIMATED | unit: color | source: project */
+  --color-light-glass-tint: rgba(255,255,255,0.84);
+  /* color.light.glassBorder | ESTIMATED | unit: color | source: project */
+  --color-light-glass-border: rgba(255,255,255,0.65);
+  /* color.light.scrim | ESTIMATED | unit: color | source: project */
+  --color-light-scrim: rgba(0,0,0,0.35);
+  /* color.dark.canvas | ESTIMATED | unit: color | source: project */
+  --color-dark-canvas: #121212;
+  /* color.dark.surface | ESTIMATED | unit: color | source: project */
+  --color-dark-surface: #1C1C1E;
+  /* color.dark.raised | ESTIMATED | unit: color | source: project */
+  --color-dark-raised: #2C2C2E;
+  /* color.dark.text | ESTIMATED | unit: color | source: project */
+  --color-dark-text: #F5F5F7;
+  /* color.dark.secondary | ESTIMATED | unit: color | source: project */
+  --color-dark-secondary: #B7B7BF;
+  /* color.dark.border | ESTIMATED | unit: color | source: project */
+  --color-dark-border: #8E8E99;
+  /* color.dark.accent | ESTIMATED | unit: color | source: project */
+  --color-dark-accent: #FF9CAC;
+  /* color.dark.onAccent | ESTIMATED | unit: color | source: project */
+  --color-dark-on-accent: #171717;
+  /* color.dark.focus | ESTIMATED | unit: color | source: project */
+  --color-dark-focus: #8FC7FF;
+  /* color.dark.glassTint | ESTIMATED | unit: color | source: project */
+  --color-dark-glass-tint: rgba(28,28,30,0.88);
+  /* color.dark.glassBorder | ESTIMATED | unit: color | source: project */
+  --color-dark-glass-border: rgba(255,255,255,0.20);
+  /* color.dark.scrim | ESTIMATED | unit: color | source: project */
+  --color-dark-scrim: rgba(0,0,0,0.35);
+  /* color.mono.lightAccent | ESTIMATED | unit: color | source: project */
+  --color-mono-light-accent: #000000;
+  /* color.mono.darkAccent | ESTIMATED | unit: color | source: project */
+  --color-mono-dark-accent: #FFFFFF;
+  /* motion.hover | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-hover: 100ms;
+  /* motion.press | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-press: 100ms;
+  /* motion.release | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-release: 200ms;
+  /* motion.fade | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-fade: 200ms;
+  /* motion.sidebar | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-sidebar: 240ms;
+  /* motion.sheetEnter | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-sheet-enter: 300ms;
+  /* motion.sheetExit | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-sheet-exit: 200ms;
+  /* motion.toast | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-toast: 200ms;
+  /* motion.morph | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-morph: 340ms;
+  /* motion.theme | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-theme: 280ms;
+  /* motion.reduced | ESTIMATED | unit: ms | source: project, convx-motion */
+  --motion-reduced: 0ms;
+  /* motion.easeOut | ESTIMATED | unit: bezier | source: project */
+  --motion-ease-out: cubic-bezier(0.2, 0, 0, 1);
+  /* motion.easeIn | ESTIMATED | unit: bezier | source: project */
+  --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  /* motion.pressScale | ESTIMATED | unit: number | source: project */
+  --motion-press-scale: 0.98;
+  /* motion.travel | ESTIMATED | unit: px | source: project */
+  --motion-travel: 8px;
+  /* spring.mass | ESTIMATED | unit: number | source: project */
+  --spring-mass: 1;
+  /* spring.stiffness | ESTIMATED | unit: number | source: project, convx-apple */
+  --spring-stiffness: 158;
+  /* spring.ratio | ESTIMATED | unit: number | source: project, convx-apple */
+  --spring-ratio: 0.85;
+  /* spring.damping | ESTIMATED | unit: number | source: project */
+  --spring-damping: 21.36866865296011;
+  /* spring.frameClamp | ESTIMATED | unit: ms | source: project */
+  --spring-frame-clamp: 32ms;
+  /* spring.substep | ESTIMATED | unit: ms | source: project */
+  --spring-substep: 4ms;
+  /* spring.tolerance | ESTIMATED | unit: number | source: project */
+  --spring-tolerance: 0.001;
+  /* spring.maxDuration | ESTIMATED | unit: ms | source: project */
+  --spring-max-duration: 2000ms;
+  /* glass.blur | ESTIMATED | unit: px | source: project, web-glass */
+  --glass-blur: 16px;
+  /* glass.refractionBlur | ESTIMATED | unit: px | source: project, web-glass */
+  --glass-refraction-blur: 3px;
+  /* glass.saturation | ESTIMATED | unit: number | source: project, web-glass */
+  --glass-saturation: 1.5;
+  /* glass.displacement | ESTIMATED | unit: number | source: project */
+  --glass-displacement: 12;
+  /* glass.mapBlur | ESTIMATED | unit: number | source: project */
+  --glass-map-blur: 2;
+  /* glass.frequency | ESTIMATED | unit: number | source: project */
+  --glass-frequency: 0.018;
+  /* glass.seed | ESTIMATED | unit: number | source: project */
+  --glass-seed: 7;
+  /* glass.resizeDebounce | ESTIMATED | unit: ms | source: project, web-glass */
+  --glass-resize-debounce: 120ms;
+  /* glass.maxSide | ESTIMATED | unit: px | source: project, web-glass */
+  --glass-max-side: 800px;
+  /* glass.grainOpacity | ESTIMATED | unit: number | source: project */
+  --glass-grain-opacity: 0;
+  /* glass.shadow | ESTIMATED | unit: css | source: project */
+  --glass-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  /* glass.highlight | ESTIMATED | unit: css | source: project */
+  --glass-highlight: inset 0 1px 0 rgba(255,255,255,0.35);
+  /* mapping.dpToCss | ESTIMATED | unit: number | source: project */
+  /* mapping.spToCss | ESTIMATED | unit: number | source: project */
+  /* budget.feedback | ESTIMATED | unit: ms | source: project */
+  /* budget.coldStart | ESTIMATED | unit: ms | source: project */
+  /* budget.warmStart | ESTIMATED | unit: ms | source: project */
+  /* budget.longTask | ESTIMATED | unit: ms | source: project */
+  /* budget.idleCpu | ESTIMATED | unit: percent | source: project */
+  /* budget.memory | ESTIMATED | unit: MiB | source: project */
+  /* budget.jsGzip | ESTIMATED | unit: KiB | source: project */
+  /* budget.frame60 | ESTIMATED | unit: ms | source: project */
+  /* budget.frame120 | ESTIMATED | unit: ms | source: project */
+  /* budget.frame144 | ESTIMATED | unit: ms | source: project */
+  /* standard.contrastText | VERIFIED | unit: ratio | source: wcag */
+  /* standard.contrastLarge | VERIFIED | unit: ratio | source: wcag */
+  /* standard.largeText | VERIFIED | unit: px | source: wcag */
+  /* standard.largeBold | VERIFIED | unit: px | source: wcag */
+  /* standard.textZoom | VERIFIED | unit: percent | source: wcag */
+  /* standard.targetAA | VERIFIED | unit: px | source: wcag */
+  /* standard.windowsTouch | VERIFIED | unit: epx | source: ms-touch */
+  /* standard.windowsWideHeight | VERIFIED | unit: epx | source: ms-touch */
+  /* standard.windowsWideWidth | VERIFIED | unit: epx | source: ms-touch */
+  /* standard.windowsOuterRadius | VERIFIED | unit: px | source: ms-geometry */
+  /* standard.windowsControlRadius | VERIFIED | unit: px | source: ms-geometry */
+  /* standard.windowsSnappedRadius | VERIFIED | unit: px | source: ms-geometry */
+  /* standard.appleClearScrim | VERIFIED | unit: number | source: apple-materials */
+  /* standard.iosTarget | VERIFIED | unit: pt | source: apple-accessibility, apple-buttons */
+  /* standard.iosMinimum | VERIFIED | unit: pt | source: apple-accessibility */
+  /* standard.macTarget | VERIFIED | unit: pt | source: apple-accessibility */
+  /* standard.macMinimum | VERIFIED | unit: pt | source: apple-accessibility */
+  /* standard.androidTarget | VERIFIED | unit: dp | source: compose */
+  /* test.dpi | ESTIMATED | unit: percent | source: project */
+  /* test.refresh | ESTIMATED | unit: Hz | source: project */
+  /* reference.convx.accent | VERIFIED | unit: color | source: convx-apple */
+  /* reference.convx.bg | VERIFIED | unit: color | source: convx-apple */
+  /* reference.convx.elevated | VERIFIED | unit: color | source: convx-apple */
+  /* reference.convx.card | VERIFIED | unit: color | source: convx-apple */
+  /* reference.convx.cardSecondary | VERIFIED | unit: color | source: convx-apple */
+  /* reference.convx.metadata | VERIFIED | unit: color | source: convx-apple */
+  /* reference.convx.gutter | VERIFIED | unit: dp | source: convx-apple */
+  /* reference.convx.itemGap | VERIFIED | unit: dp | source: convx-apple */
+  /* reference.convx.sectionGap | VERIFIED | unit: dp | source: convx-apple */
+  /* reference.convx.textGap | VERIFIED | unit: dp | source: convx-apple */
+  /* reference.convx.radii | VERIFIED | unit: dp | source: convx-apple */
+  /* reference.convx.type | VERIFIED | unit: sp | source: convx-apple */
+  /* reference.convx.leading | VERIFIED | unit: sp | source: convx-apple */
+  /* reference.convx.springK | VERIFIED | unit: number | source: convx-apple */
+  /* reference.convx.springRatios | VERIFIED | unit: number | source: convx-apple */
+  /* reference.convx.pressK | VERIFIED | unit: number | source: convx-motion */
+  /* reference.convx.pressRatio | VERIFIED | unit: number | source: convx-motion */
+  /* reference.convx.selectK | VERIFIED | unit: number | source: convx-motion */
+  /* reference.convx.selectRatio | VERIFIED | unit: number | source: convx-motion */
+  /* reference.convx.morphEnter | VERIFIED | unit: ms | source: convx-motion */
+  /* reference.convx.morphExit | VERIFIED | unit: ms | source: convx-motion */
+  /* reference.convx.morphCurve | VERIFIED | unit: bezier | source: convx-motion */
+  /* reference.convx.push | VERIFIED | unit: ms | source: convx-motion */
+  /* reference.convx.pushComment | VERIFIED | unit: ms | source: convx-motion */
+  /* reference.convx.pushCurve | VERIFIED | unit: bezier | source: convx-motion */
+  /* reference.convx.swapIn | VERIFIED | unit: ms | source: convx-motion */
+  /* reference.convx.swapOut | VERIFIED | unit: ms | source: convx-motion */
+  /* reference.convx.swapScale | VERIFIED | unit: number | source: convx-motion */
+  /* reference.convx.blur | VERIFIED | unit: dp | source: convx-glass */
+  /* reference.convx.vibrancy | VERIFIED | unit: number | source: convx-glass */
+  /* reference.convx.saturationFormula | VERIFIED | unit: number | source: convx-glass */
+  /* reference.convx.namedSaturation | VERIFIED | unit: number | source: convx-tint */
+  /* reference.convx.lensHeight | VERIFIED | unit: number | source: convx-glass */
+  /* reference.convx.lensAmount | VERIFIED | unit: number | source: convx-glass */
+  /* reference.convx.lensMax | VERIFIED | unit: dp | source: convx-glass */
+  /* reference.convx.surface | VERIFIED | unit: number | source: convx-glass */
+  /* reference.convx.puck | VERIFIED | unit: number | source: convx-glass */
+  /* reference.convx.highlightConstructor | VERIFIED | unit: number | source: convx-glass */
+  /* reference.convx.highlightPreference | VERIFIED | unit: number | source: convx-config */
+  /* reference.convx.sheetBlur | VERIFIED | unit: dp | source: convx-tint */
+  /* reference.convx.captureScale | VERIFIED | unit: number | source: convx-glass */
+  /* reference.convx.luminanceSplit | VERIFIED | unit: number | source: convx-apple */
+  /* reference.convx.glassSplit | VERIFIED | unit: number | source: convx-glass */
+  /* reference.web.scale | VERIFIED | unit: number | source: web-glass */
+  /* reference.web.chroma | VERIFIED | unit: number | source: web-glass */
+  /* reference.web.border | VERIFIED | unit: number | source: web-glass */
+  /* reference.web.mapBlur | VERIFIED | unit: px | source: web-glass */
+  /* reference.web.blur | VERIFIED | unit: px | source: web-glass */
+  /* reference.web.saturate | VERIFIED | unit: number | source: web-glass */
+  /* reference.web.fallback | VERIFIED | unit: px | source: web-glass */
+  /* reference.web.radius | VERIFIED | unit: px | source: web-glass */
+  /* reference.web.debounce | VERIFIED | unit: ms | source: web-glass */
+  /* reference.hig.cssRadii | VERIFIED | unit: px | source: hig-css */
+  /* reference.hig.proseRadii | VERIFIED | unit: px | source: hig-prose */
+  /* reference.hig.cssDurations | VERIFIED | unit: ms | source: hig-css */
+  /* reference.hig.proseDurations | VERIFIED | unit: ms | source: hig-prose */
+  /* reference.hig.glassBlur | VERIFIED | unit: px | source: hig-css */
+  /* reference.hig.saturation | VERIFIED | unit: number | source: hig-css */
+  /* reference.better.duration | VERIFIED | unit: ms | source: better */
+  /* reference.vibrancy.blurWarning | VERIFIED | unit: build | source: vibrancy */
+  /* reference.vibrancy.acrylicWarning | VERIFIED | unit: build | source: vibrancy */
+  /* reference.vibrancy.win10Warning | VERIFIED | unit: release | source: vibrancy */
+  /* reference.apple.type | VERIFIED | unit: pt | source: apple-typography */
+  /* reference.apple.leading | VERIFIED | unit: pt | source: apple-typography */
+  /* type.scale | ESTIMATED | unit: number | source: project */
+  --type-scale: 1;
+}
+:root, [data-theme="light"] {
+  --color-canvas: var(--color-light-canvas);
+  --color-surface: var(--color-light-surface);
+  --color-raised: var(--color-light-raised);
+  --color-text: var(--color-light-text);
+  --color-secondary: var(--color-light-secondary);
+  --color-border: var(--color-light-border);
+  --color-accent: var(--color-light-accent);
+  --color-on-accent: var(--color-light-on-accent);
+  --color-focus: var(--color-light-focus);
+  --color-glass-tint: var(--color-light-glass-tint);
+  --color-glass-border: var(--color-light-glass-border);
+  --color-scrim: var(--color-light-scrim);
+}
+[data-theme="dark"] {
+  --color-canvas: var(--color-dark-canvas);
+  --color-surface: var(--color-dark-surface);
+  --color-raised: var(--color-dark-raised);
+  --color-text: var(--color-dark-text);
+  --color-secondary: var(--color-dark-secondary);
+  --color-border: var(--color-dark-border);
+  --color-accent: var(--color-dark-accent);
+  --color-on-accent: var(--color-dark-on-accent);
+  --color-focus: var(--color-dark-focus);
+  --color-glass-tint: var(--color-dark-glass-tint);
+  --color-glass-border: var(--color-dark-glass-border);
+  --color-scrim: var(--color-dark-scrim);
+}
+@media (prefers-color-scheme: dark) {
+:root:not([data-theme="light"]) {
+  --color-canvas: var(--color-dark-canvas);
+  --color-surface: var(--color-dark-surface);
+  --color-raised: var(--color-dark-raised);
+  --color-text: var(--color-dark-text);
+  --color-secondary: var(--color-dark-secondary);
+  --color-border: var(--color-dark-border);
+  --color-accent: var(--color-dark-accent);
+  --color-on-accent: var(--color-dark-on-accent);
+  --color-focus: var(--color-dark-focus);
+  --color-glass-tint: var(--color-dark-glass-tint);
+  --color-glass-border: var(--color-dark-glass-border);
+  --color-scrim: var(--color-dark-scrim);
+}
+}
+[data-mono="true"] { --color-canvas: var(--color-mono-dark-accent); --color-surface: var(--color-mono-dark-accent); --color-text: var(--color-mono-light-accent); --color-raised: var(--color-surface); --color-secondary: var(--color-text); --color-border: var(--color-text); --color-accent: var(--color-text); --color-on-accent: var(--color-surface); --color-focus: var(--color-text); --color-glass-tint: var(--color-surface); --color-glass-border: var(--color-text); --color-scrim: var(--color-surface); }
+[data-mono="true"][data-theme="dark"] { --color-canvas: var(--color-mono-light-accent); --color-surface: var(--color-mono-light-accent); --color-text: var(--color-mono-dark-accent); }
+@media (prefers-color-scheme: dark) { [data-mono="true"]:not([data-theme="light"]) { --color-canvas: var(--color-mono-light-accent); --color-surface: var(--color-mono-light-accent); --color-text: var(--color-mono-dark-accent); } }
+@media (max-width: 640px) { .layout { grid-template-columns: minmax(0, 1fr) !important; } .sidebar { position: static !important; } }

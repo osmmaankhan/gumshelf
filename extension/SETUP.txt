@@ -1,0 +1,1 @@
+Open GumShelf → Connect Gumroad. Load this folder as an unpacked extension in your regular Chrome or Edge profile. Open the helper, select your signed-in Gumroad Library tab, and enter the app pairing code. See START-HERE.md for full instructions.

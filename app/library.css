@@ -1,0 +1,373 @@
+/* Keep library content solid. The navigation follows the window appearance setting. */
+body[data-theme] .shell.discovery-layout .main-panel {
+ background:var(--color-surface)!important;
+ backdrop-filter:none!important;
+}
+
+body[data-theme] .discovery-layout .toolbar { align-items:center; }
+body[data-theme] .discovery-layout .toolbar .search-wrap {
+ flex:1 1 min(100%,19rem);
+}
+body[data-theme] .discovery-layout .toolbar .search {
+ min-height:44px;
+ border-radius:var(--radius-control);
+ background:var(--color-canvas)!important;
+}
+body[data-theme] .discovery-layout .resource-filters { padding-bottom:var(--space-xs); }
+body[data-theme] .discovery-layout .resource-filters .chip { min-height:calc(var(--size-compact) - var(--space-xs)); }
+body[data-theme] .discovery-layout .resource-options {
+ align-items:center;
+ padding-bottom:var(--space-md);
+}
+body[data-theme] .discovery-layout .resource-options .note { flex-basis:100%; }
+body[data-theme] .discovery-layout .resource-options label { flex-wrap:nowrap; }
+body[data-theme] .discovery-layout .resource-options label .select-shell { flex:0 1 auto; }
+@media (max-width:560px) {
+ body[data-theme] .discovery-layout .resource-options label { flex-wrap:wrap; }
+}
+
+body[data-theme] .discovery-layout .product-list {
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(min(100%,16.5rem),1fr));
+ gap:var(--space-md);
+}
+body[data-theme] .discovery-layout .product {
+ display:grid;
+ grid-template-columns:auto minmax(0,1fr);
+ grid-template-rows:1fr auto;
+ align-items:start;
+ padding:var(--space-md);
+ border-radius:var(--radius-card);
+ background:var(--color-raised)!important;
+ border:1px solid var(--color-border)!important;
+ backdrop-filter:none!important;
+ box-shadow:none;
+}
+body[data-theme] .discovery-layout .product:not(.selected):not(:hover) { border-color:var(--color-border)!important; }
+body[data-theme] .discovery-layout .product.selected {
+ border-color:var(--color-focus)!important;
+}
+body[data-theme] .discovery-layout .product:focus-visible {
+ outline:2px solid var(--color-focus);
+ outline-offset:-3px;
+}
+body[data-theme] .discovery-layout .product .cover-button {
+ width:72px;
+ height:auto;
+ aspect-ratio:4/3;
+ border-radius:var(--radius-control);
+}
+body[data-theme] .discovery-layout .product-copy { display:flex; flex-direction:column; gap:var(--space-xs); }
+body[data-theme] .discovery-layout .title-button {
+ order:-1;
+ text-align:start;
+ white-space:normal;
+ overflow-wrap:anywhere;
+}
+body[data-theme] .discovery-layout .product-copy > p:not(.software-evidence) {
+ display:-webkit-box;
+ -webkit-box-orient:vertical;
+ -webkit-line-clamp:2;
+ overflow:hidden;
+}
+body[data-theme] .discovery-layout .product-copy > p:empty { display:none; }
+body[data-theme] .discovery-layout .product .row-actions {
+ grid-column:1/-1;
+ justify-content:flex-end;
+ margin-inline:0;
+ border-top:0;
+ padding-top:var(--space-xs);
+}
+body[data-theme] .software-evidence {
+ color:var(--color-secondary);
+ margin-block:var(--space-xs);
+}
+@media (forced-colors:active) {
+ body[data-theme] .shell.discovery-layout :is(.rail,.topline,.main-panel,.detail,.product) {
+  background:Canvas!important;
+  color:CanvasText!important;
+ }
+ body[data-theme] .shell.discovery-layout .rail .navigation-selection { background:Canvas!important; }
+ body[data-theme] .shell.discovery-layout .rail .nav.active { border-color:Highlight!important; }
+}
+
+/* One shell geometry across views, with the rail sharing the content row. */
+body[data-theme] .unified-shell {
+ display:grid;
+ grid-template-columns:auto minmax(0,1fr);
+ grid-template-rows:auto minmax(0,1fr) auto;
+ row-gap:var(--space-md);
+}
+body[data-theme] .unified-shell .workspace {
+ display:grid;
+ grid-column:2;
+ grid-row:1/-1;
+ grid-template-rows:subgrid;
+}
+body[data-theme] .unified-shell .topline { justify-self:center; margin-bottom:0; }
+body[data-theme] .unified-shell .rail {
+ grid-column:1;
+ grid-row:2;
+ align-self:stretch;
+ height:auto;
+ max-height:none;
+ min-height:0;
+}
+body[data-theme] .unified-shell .rail .nav {
+ border-radius:var(--radius-control);
+}
+body[data-theme] .unified-shell .rail .nav.active {
+ background:color-mix(in srgb,var(--color-accent) 13%,var(--color-surface))!important;
+ border-color:var(--color-focus)!important;
+}
+body[data-theme] .unified-shell .navigation-selection { display:none; }
+@media (min-width:1000px) {
+ body[data-theme] .unified-shell .rail { width:164px; }
+ body[data-theme] .unified-shell .rail .nav {
+  flex-direction:row;
+  justify-content:flex-start;
+  padding-inline:var(--space-md);
+  gap:var(--space-sm);
+  text-align:start;
+ }
+}
+
+body[data-theme] .discovery-layout .resource-filters {
+ flex-wrap:nowrap;
+ overflow-x:auto;
+ min-height:max-content;
+ padding-block:var(--space-xs) var(--space-sm);
+}
+body[data-theme] .discovery-layout .resource-filters .chip { flex:none; white-space:nowrap; }
+body[data-theme] .discovery-layout .toolbar .search,
+body[data-theme] .discovery-layout .toolbar > .select-shell select {
+ min-height:var(--size-row);
+}
+body[data-theme] .discovery-layout .product-list {
+ grid-template-columns:repeat(auto-fill,minmax(min(100%,calc(var(--layout-min-width) - var(--space-xxl))),1fr));
+}
+body[data-theme] .discovery-layout .product {
+ grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ grid-template-rows:1fr auto;
+}
+body[data-theme] .discovery-layout .product .cover-button {
+ width:100%;
+ aspect-ratio:16/9;
+}
+body[data-theme] .discovery-layout .product .cover-button img { width:100%; height:100%; object-fit:cover; }
+body[data-theme] .discovery-layout .product .title-button {
+ display:-webkit-box;
+ -webkit-box-orient:vertical;
+ -webkit-line-clamp:2;
+ overflow:hidden;
+}
+body[data-theme] .discovery-layout .product-copy .creator-label { overflow-wrap:anywhere; }
+body[data-theme] .discovery-layout .product .row-actions .icon-button {
+ width:var(--size-compact);
+ height:var(--size-compact);
+}
+body[data-theme] .detail-metadata {
+ margin-top:var(--space-md);
+ color:var(--color-secondary);
+}
+body[data-theme] .detail-metadata summary { cursor:pointer; }
+body[data-theme] .detail-metadata .tags { margin-block:var(--space-sm); }
+
+body[data-theme] .quote-actions { display:flex; justify-content:flex-end; }
+body[data-theme] .quote-actions .product-menu-trigger { anchor-name:--quote-menu-anchor; }
+body[data-theme] #quote-actions-menu { position-anchor:--quote-menu-anchor; }
+body[data-theme] #quote-actions-menu .quote-delete-action {
+ border-top:var(--space-hairline) solid var(--color-border);
+ border-top-left-radius:0;
+ border-top-right-radius:0;
+}
+@media (forced-colors:active) {
+ body[data-theme] .unified-shell .rail .nav.active { border-color:Highlight!important; }
+}
+
+body[data-theme] .discovery-layout .resource-filter-bar {
+ display:flex;
+ align-items:center;
+ gap:var(--space-sm);
+ padding-inline:var(--content-gutter);
+}
+body[data-theme] .discovery-layout .resource-filter-bar .resource-filters {
+ flex:0 1 auto;
+ min-width:0;
+ padding-inline:0;
+}
+body[data-theme] #resource-type-picker {
+ flex:none;
+ width:var(--size-compact);
+ height:var(--size-compact);
+ anchor-name:--resource-type-anchor;
+}
+body[data-theme] #resource-type-menu { position-anchor:--resource-type-anchor; }
+body[data-theme] #resource-type-menu .btn {
+ justify-content:space-between;
+}
+body[data-theme] #resource-type-menu [aria-pressed=true] {
+ background:var(--color-raised);
+ box-shadow:inset 0 0 0 var(--space-hairline) var(--color-focus);
+}
+
+/* Keep native checkbox semantics and use the shared control corners. */
+body[data-theme] .select-row input[type=checkbox] {
+ appearance:none;
+ display:inline-grid;
+ place-content:center;
+ border:var(--space-hairline) solid var(--color-border);
+ border-radius:var(--radius-control);
+ background:var(--color-surface);
+ cursor:pointer;
+}
+body[data-theme] .select-row input[type=checkbox]:checked {
+ border-color:var(--color-accent);
+ background:var(--color-accent);
+ color:var(--color-on-accent);
+}
+body[data-theme] .select-row input[type=checkbox]:checked::before {
+ content:"";
+ width:var(--space-xs);
+ height:var(--space-sm);
+ border:solid currentColor;
+ border-width:0 var(--space-tiny) var(--space-tiny) 0;
+ transform:rotate(45deg);
+}
+body[data-theme] .select-row input[type=checkbox]:focus-visible {
+ outline:var(--size-focus-width) solid var(--color-focus);
+ outline-offset:var(--size-focus-offset);
+}
+@media (forced-colors:active) {
+ body[data-theme] .select-row input[type=checkbox] {
+  forced-color-adjust:none;
+  border-color:ButtonText;
+  background:Canvas;
+ }
+ body[data-theme] .select-row input[type=checkbox]:checked {
+  border-color:Highlight;
+  background:Highlight;
+  color:HighlightText;
+ }
+ body[data-theme] .select-row input[type=checkbox]:focus-visible { outline-color:Highlight; }
+}
+
+body[data-theme] :is(.home-search-row,.home-page.is-searching .home-search-row) .search-wrap > svg {
+ top:50%;
+ transform:translateY(-50%);
+}
+body[data-theme] .category-tools {
+ padding-block-start:calc(var(--size-focus-width) + var(--size-focus-offset));
+}
+body[data-theme] .category-grid {
+ grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--category-card-min)),1fr));
+ grid-auto-rows:1fr;
+}
+body[data-theme]:not([data-palette=mono]) .creator-card {
+ background:color-mix(in srgb,var(--creator-tint) 20%,var(--color-surface))!important;
+}
+body[data-theme] .browser-connection-actions {
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:var(--space-sm);
+}
+body[data-theme] .browser-connection-actions .btn {
+ min-height:var(--size-default);
+ margin:0;
+}
+@media (forced-colors:active) {
+ body[data-theme]:not([data-palette=mono]) .creator-card { background:Canvas!important; }
+}
+
+body[data-theme] .row-actions .is-saved {
+ background:var(--color-surface)!important;
+ border-color:var(--color-border)!important;
+ color:var(--color-text)!important;
+}
+body[data-theme] .row-actions .is-saved svg { fill:currentColor; }
+
+body[data-theme][data-material=blur] .unified-shell .footer {
+ color:var(--color-text);
+ background:var(--color-canvas);
+ padding:var(--space-xs) var(--space-md);
+ border-radius:var(--radius-control);
+}
+body[data-theme][data-material=solid] .unified-shell .rail {
+ background:var(--color-raised)!important;
+ border:var(--space-hairline) solid var(--color-border);
+}
+body[data-theme] .unified-shell .rail .nav:is(:hover,.active) {
+ border-color:transparent!important;
+ outline:var(--space-hairline) solid var(--color-focus);
+ outline-offset:var(--space-hairline);
+}
+body[data-theme] .unified-shell .rail .nav:hover:not(.active) {
+ outline-color:color-mix(in srgb,var(--color-focus) 55%,var(--color-border));
+}
+body[data-theme] .unified-shell .rail .nav:focus-visible {
+ border-color:transparent!important;
+ outline:var(--size-focus-width) solid var(--color-focus);
+ outline-offset:var(--space-hairline);
+}
+body[data-theme] .discovery-layout .content-area {
+ display:grid;
+ grid-template-columns:minmax(0,1fr);
+ grid-template-rows:auto minmax(0,1fr);
+}
+body[data-theme] .discovery-layout .collection-tools { min-width:0; }
+body[data-theme] .discovery-layout .content-area > .collection {
+ min-width:0;
+ min-height:0;
+}
+body[data-theme] .discovery-layout .detail {
+ background:var(--color-canvas)!important;
+ backdrop-filter:none!important;
+ padding:var(--space-md);
+ overflow-wrap:anywhere;
+}
+body[data-theme] .discovery-layout :is(.detail-top,.gallery-controls) .icon-button {
+ width:var(--size-compact);
+ height:var(--size-compact);
+}
+body[data-theme] .discovery-layout .detail-description summary {
+ cursor:pointer;
+ color:var(--color-text);
+}
+body[data-theme] .discovery-layout .detail-description[open] + .detail-description-preview {
+ display:none;
+}
+body[data-theme] .discovery-layout .resource-filter-bar {
+ align-items:flex-start;
+}
+body[data-theme] #resource-type-picker {
+ width:calc(var(--size-compact) - var(--space-xs));
+ height:calc(var(--size-compact) - var(--space-xs));
+ margin-top:var(--space-xs);
+}
+@media (min-width:961px) {
+ body[data-theme] .discovery-layout .content-area.with-detail {
+  grid-template-columns:minmax(0,1fr) minmax(var(--layout-min-width),1fr);
+ }
+ body[data-theme] .discovery-layout .with-detail .detail {
+  grid-column:2;
+  grid-row:1/-1;
+  width:auto;
+  min-width:0;
+ }
+}
+@media (max-width:960px) {
+ body[data-theme] .discovery-layout .content-area.with-detail {
+  grid-template-rows:auto auto auto;
+ }
+ body[data-theme] .discovery-layout .with-detail .detail {
+  grid-row:2;
+ }
+}
+@media (forced-colors:active) {
+ body[data-theme] .unified-shell .rail .nav:is(:hover,.active,:focus-visible) { outline-color:Highlight; }
+ /* Hover and the current view share Highlight here, so the current view also gets a thicker outline. */
+ body[data-theme] .unified-shell .rail .nav.active { outline-width:var(--size-focus-width); }
+ body[data-theme] .unified-shell .rail .nav:hover:not(.active) { outline-style:dashed; }
+ body[data-theme][data-material=blur] .unified-shell .footer { background:Canvas; color:CanvasText; }
+}

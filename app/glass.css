@@ -1,0 +1,24 @@
+/* One optical layer per floating navigation surface. No animated optics. */
+.glass-definitions { position:absolute; width:var(--space-zero); height:var(--space-zero); pointer-events:none; }
+body[data-theme] .rail { max-height:var(--glass-max-side); height:100%; align-self:center; overflow-y:auto; }
+body[data-theme] .rail .nav { min-height:var(--size-touch); }
+body[data-theme] .topline { max-width:var(--glass-max-side); width:100%; align-self:center; flex-shrink:0; flex-wrap:wrap; }
+body[data-theme] .glass-host { position:relative; }
+body[data-theme] .glass-host > :not(.glass-optics) { position:relative; }
+body[data-theme] .glass-host[data-glass-mode] { backdrop-filter:none!important; }
+.glass-optics { position:absolute; inset:var(--space-zero); border-radius:inherit; pointer-events:none; background:var(--color-surface); }
+body[data-theme][data-material=blur] .glass-host[data-glass-mode=lens],
+body[data-theme][data-material=blur] .glass-host[data-glass-mode=blur] { background:transparent!important; box-shadow:var(--glass-shadow); }
+body[data-theme] .glass-host:is([data-glass-mode=lens],[data-glass-mode=blur]) > .glass-optics { background:var(--color-glass-tint); backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-saturation)); box-shadow:var(--glass-highlight); }
+body[data-theme] .glass-host[data-glass-mode=lens] > .glass-optics { backdrop-filter:var(--navigation-lens-filter) blur(var(--glass-lens-blur)) saturate(var(--glass-saturation)); }
+body[data-theme=light] .glass-host[data-glass-mode=lens][data-glass-profile=candidate] > .glass-optics { background:var(--color-light-lens-tint); }
+body[data-theme=dark] .glass-host[data-glass-mode=lens][data-glass-profile=candidate] > .glass-optics { background:var(--color-dark-lens-tint); }
+/* Native Mica and accessibility modes do not stack with in-page optics. */
+body[data-theme][data-material=blur][data-native-backdrop=acrylic] { background:transparent!important; }
+body[data-theme][data-material=blur][data-native-backdrop=acrylic] :is(.rail,.topline) { backdrop-filter:none!important; }
+body[data-theme] .glass-host[data-glass-mode=solid] > .glass-optics { display:none; }
+@media (prefers-reduced-transparency:reduce),(prefers-contrast:more),(forced-colors:active) {
+ body[data-theme] .glass-host[data-glass-mode] { background:var(--color-surface)!important; box-shadow:none; }
+ body[data-theme] .glass-host[data-glass-mode] > .glass-optics { display:none; }
+}
+@media (forced-colors:active) { body[data-theme] .glass-host[data-glass-mode] { background:Canvas!important; border-color:CanvasText!important; } }

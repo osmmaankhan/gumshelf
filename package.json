@@ -1,0 +1,53 @@
+{
+  "name": "gumshelf",
+  "version": "0.4.31",
+  "description": "A private desktop home for your Gumroad library",
+  "main": "main.cjs",
+  "author": "GumShelf",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test tests/*.test.cjs",
+    "package": "electron-builder --win dir",
+    "postpackage": "node scripts/brand-executable.cjs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "45.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "local.gumshelf.desktop",
+    "productName": "GumShelf",
+    "directories": {
+      "output": "../../work/build"
+    },
+    "files": [
+      "app/**/*",
+      "lib/**/*",
+      "main.cjs",
+      "preload.cjs",
+      "package.json",
+      "extension/**/*"
+    ],
+    "win": {
+      "target": "dir",
+      "signAndEditExecutable": false,
+      "icon": "app/brand.ico"
+    },
+    "extraResources": [
+      {
+        "from": "extension",
+        "to": "browser-helper"
+      },
+      {
+        "from": "branding",
+        "to": "branding"
+      },
+      {
+        "from": "../references/Impactful_Book_Quotes_Compendium-updated.xlsx",
+        "to": "quote-source.xlsx"
+      }
+    ]
+  }
+}

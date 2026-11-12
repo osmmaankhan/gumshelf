@@ -1,0 +1,4 @@
+/* Approved isolated prototype candidates. Original desktop tokens unchanged. */
+:root { --glass-lens-blur: 3px; --color-light-lens-tint: rgba(245,245,247,0.40); --color-dark-lens-tint: rgba(255,255,255,0.15); }
+/* Exact aliases of standard.contrastText / standard.contrastLarge in tokens.json. */
+:root { --glass-contrast-text: 4.5; --glass-contrast-large: 3; }

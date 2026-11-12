@@ -1,0 +1,25 @@
+/* Map the existing palette preference to the supplied monochrome tokens.
+ * No renderer, preference or storage changes are required.
+ */
+body[data-palette=mono] {
+  --color-canvas: var(--color-mono-dark-accent);
+  --color-surface: var(--color-mono-dark-accent);
+  --color-text: var(--color-mono-light-accent);
+  --color-raised: var(--color-surface);
+  --color-secondary: var(--color-text);
+  --color-border: var(--color-text);
+  --color-accent: var(--color-text);
+  --color-on-accent: var(--color-surface);
+  --color-focus: var(--color-text);
+  --color-glass-tint: var(--color-surface);
+  --color-glass-border: var(--color-text);
+  --color-scrim: var(--color-surface);
+}
+body[data-palette=mono][data-theme=dark] {
+  --color-canvas: var(--color-mono-light-accent);
+  --color-surface: var(--color-mono-light-accent);
+  --color-text: var(--color-mono-dark-accent);
+}
+@media (forced-colors: active) {
+  body[data-palette=mono] { --color-canvas: Canvas; --color-surface: Canvas; --color-raised: ButtonFace; --color-text: CanvasText; --color-secondary: CanvasText; --color-border: ButtonText; --color-accent: Highlight; --color-on-accent: HighlightText; --color-focus: Highlight; }
+}

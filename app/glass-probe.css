@@ -1,0 +1,4 @@
+body { margin:var(--space-zero); background:var(--color-canvas); }
+#grid { position:absolute; inset:var(--space-zero); }
+#plane { position:absolute; top:var(--space-xl); left:var(--space-xl); width:var(--layout-compact); height:var(--size-toolbar); border-radius:var(--radius-hero); background:var(--color-dark-lens-tint); backdrop-filter:url("#probe-filter") blur(var(--glass-lens-blur)) saturate(var(--glass-saturation)); }
+body.vertical #plane { width:var(--size-toolbar); height:var(--layout-compact); }

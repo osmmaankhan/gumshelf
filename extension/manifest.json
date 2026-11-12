@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "GumShelf Browser Helper",
+  "version": "0.4.5",
+  "description": "Connect the Gumroad library in your current browser profile to GumShelf on this PC.",
+  "permissions": [
+    "scripting",
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://gumroad.com/*",
+    "https://*.gumroad.com/*",
+    "http://127.0.0.1:43187/*"
+  ],
+  "background": {
+    "service_worker": "worker.js"
+  },
+  "action": {
+    "default_title": "Connect GumShelf",
+    "default_popup": "popup.html"
+  }
+}
