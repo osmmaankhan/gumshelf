@@ -64,7 +64,7 @@
   queued=false;
   for(const [host,r]of records)if(!host.isConnected){r.resize.disconnect();r.filter.remove();records.delete(host);}
   let lenses=0;
-  for(const host of document.querySelectorAll('.rail .navigation-selection,.topline,.glass-demo-lens,.liquid-range-lens:not([hidden])')){
+  for(const host of document.querySelectorAll('.topline')){
    const r=records.get(host)||create(host),beforeRect=r.layer.getBoundingClientRect(),limit=number('--glass-max-side');
    const outer=host.getBoundingClientRect(),outerRadius=Math.min(parseFloat(getComputedStyle(host).borderTopLeftRadius),outer.width/2,outer.height/2);
    r.layer.style.borderRadius=Math.max(0,outerRadius-number('--space-hairline'))+'px';

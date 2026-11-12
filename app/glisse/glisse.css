@@ -1,0 +1,207 @@
+/* Glisse look for GumShelf. Tokens and component rules ported from Glisse
+ * 0.5.0 src/styles.css (c) 2026 Kelvin Zhang, MIT — see vendor/glisse/LICENSE.
+ * Loaded last so it can retire older rules; every motion has a reduced-motion
+ * and forced-colors fallback. */
+
+/* ---------- Tokens: light, night, black ---------- */
+body[data-theme] {
+  --lg-glass: rgb(255 255 255 / 0.6);
+  --lg-glass-active: rgb(236 236 240 / 0.85);
+  --lg-edge: rgb(0 0 0 / 0.08);
+  --lg-drop: rgb(0 0 0 / 0.06);
+  --lg-selection: color-mix(in srgb, var(--color-focus) 16%, transparent);
+  --lg-lens: rgb(0 0 0 / 0.03);
+  --lg-lens-drop: rgb(0 0 0 / 0.11);
+  --lg-surface: rgb(250 250 252 / 0.86);
+  --lg-surface-edge: rgb(0 0 0 / 0.08);
+  --lg-shadow: rgb(25 25 35 / 0.12);
+  --lg-separator: rgb(60 60 67 / 0.15);
+  --lg-track: rgb(59 59 66 / 0.3);
+  --lg-ring: var(--color-focus);
+  --lg-blur: 3px;
+  --lg-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --lg-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+body[data-theme=dark] {
+  --lg-glass: rgb(40 40 40 / 0.62);
+  --lg-glass-active: rgb(70 70 70 / 0.62);
+  --lg-edge: rgb(255 255 255 / 0.08);
+  --lg-drop: transparent;
+  --lg-selection: color-mix(in srgb, var(--color-focus) 22%, rgb(255 255 255 / 0.06));
+  --lg-lens: rgb(255 255 255 / 0.055);
+  --lg-lens-drop: transparent;
+  --lg-surface: rgb(28 28 31 / 0.86);
+  --lg-surface-edge: rgb(255 255 255 / 0.13);
+  --lg-shadow: rgb(0 0 0 / 0.38);
+  --lg-separator: rgb(235 235 245 / 0.16);
+  --lg-track: rgb(235 235 245 / 0.3);
+}
+/* Black: true #000 canvas. Glass becomes a faint white film with a hairline
+   white edge and a bright rim; no drop shadows (they vanish on black). */
+body[data-theme=dark][data-theme-variant=black] {
+  --lg-glass: rgb(255 255 255 / 0.07);
+  --lg-glass-active: rgb(255 255 255 / 0.13);
+  --lg-edge: rgb(255 255 255 / 0.10);
+  --lg-surface: rgb(18 18 20 / 0.82);
+  --lg-surface-edge: rgb(255 255 255 / 0.12);
+  --lg-shadow: transparent;
+  --glass-shadow: none;
+}
+
+/* ---------- Glass ---------- */
+body[data-theme] .lg-glass {
+  background-image: var(--lg-rim, none) !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  box-shadow: inset 0 0 0 0.5px var(--lg-edge), 0 1px 3px var(--lg-drop);
+}
+body[data-theme] .lg-glass[data-rim] { box-shadow: 0 1px 3px var(--lg-drop); }
+body[data-theme][data-material=blur] :is(.btn, .icon-button, .search, [popover]).lg-glass:not(.primary):not(.accent) {
+  background-color: var(--lg-glass);
+  -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(1.5);
+  backdrop-filter: blur(var(--lg-blur)) saturate(1.5);
+}
+/* Press highlight: lights at once, fades over 220ms (Glisse .lg-glass::after). */
+body[data-theme] :is(.btn, .icon-button, .chip, .home-pick, .category-card, .creator-card) { position: relative; }
+body[data-theme] :is(.btn, .icon-button, .chip, .home-pick, .category-card, .creator-card)::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(circle 240px at var(--lg-x, 50%) var(--lg-y, 50%), rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.06) 50%, transparent);
+  opacity: 0; transition: opacity 220ms ease-in-out;
+}
+body[data-theme=light] :is(.btn, .icon-button, .chip, .home-pick, .category-card, .creator-card)::after {
+  background: radial-gradient(circle 240px at var(--lg-x, 50%) var(--lg-y, 50%), rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.03) 50%, transparent);
+}
+body[data-theme] [data-pressed]::after { opacity: 1; transition-duration: 0s; }
+body[data-theme] :is(.btn, .icon-button, .chip)[data-pressed] { background-color: var(--lg-glass-active) !important; }
+/* Springs own scale/translate now; no CSS tween while held (old rule tweened scale). */
+body[data-theme] :is(button, .chip, .home-pick, .category-card, .creator-card) { transition-property: background-color, color, box-shadow, opacity; }
+
+/* ---------- Search field (Input / SearchField) ---------- */
+body[data-theme] .search { border-radius: var(--radius-field); }
+body[data-theme] .search:focus-visible { outline: 2px solid var(--lg-ring); outline-offset: 2px; }
+
+/* ---------- Sidebar TabBar lens ---------- */
+body[data-theme] .unified-shell .navigation-selection {
+  display: block !important;
+  position: absolute; top: 0; left: 0; z-index: 0;
+  pointer-events: none; transform-origin: 50% 50%;
+  border: 0 !important;
+  border-radius: var(--radius-choice);
+  background-color: var(--lg-selection) !important;
+  background-image: none;
+  box-shadow: none;
+  will-change: transform;
+}
+/* Lifted: the selection becomes a lens — the tint fades, the rim lights, the
+   backdrop bends, and it casts iOS's shadow faded in with --lg-lift. */
+body[data-theme] .unified-shell .navigation-selection[data-lifted] {
+  background-color: color-mix(in srgb, var(--lg-selection) calc((1 - var(--lg-lift, 0)) * 100%), var(--lg-lens)) !important;
+  background-image: var(--lg-rim, none);
+  background-size: 100% 100%;
+  box-shadow: 0 7px 11px color-mix(in srgb, var(--lg-lens-drop) calc(var(--lg-lift, 0) * 100%), transparent);
+}
+body[data-theme][data-material=blur] .unified-shell .navigation-selection[data-lifted] {
+  -webkit-backdrop-filter: var(--lg-filter, none) blur(0.5px);
+  backdrop-filter: var(--lg-filter, none) blur(0.5px);
+}
+body[data-theme] .unified-shell .rail .nav { position: relative; z-index: 1; }
+html body[data-theme] .unified-shell .rail .nav.active,
+html body[data-theme] .unified-shell .rail .nav.active:hover { background: transparent !important; box-shadow: none !important; border-color: transparent !important; outline: none; color: var(--color-text) !important; }
+/* The lens is the only selection mark; the rail never scrolls sideways. */
+body[data-theme] .unified-shell .rail { overflow-x: hidden; }
+html body[data-theme] .unified-shell .rail .nav.active:focus-visible { outline: 2px solid var(--lg-ring); outline-offset: -2px; }
+html body[data-theme] .unified-shell .rail .nav.active svg { color: var(--color-focus) !important; }
+
+/* ---------- Segmented control (theme picker) ---------- */
+body[data-theme] .theme-pick { position: relative; isolation: isolate; }
+body[data-theme] .theme-pick .lg-segmented-thumb {
+  position: absolute; top: 0; left: 0; z-index: -1; pointer-events: none;
+  border-radius: var(--radius-choice);
+  background: var(--color-raised);
+  box-shadow: 0 1px 3px var(--lg-shadow), inset 0 0 0 0.5px var(--lg-edge);
+  will-change: transform;
+}
+body[data-theme=dark] .theme-pick .lg-segmented-thumb { background: rgb(235 235 245 / 0.18); box-shadow: inset 0 0 0 0.5px var(--lg-edge); }
+body[data-theme] .theme-pick.lg-segmented { gap: 0; padding: 2px; width: fit-content; border-radius: calc(var(--radius-choice) + 2px); background: var(--lg-track-soft, rgb(118 118 128 / 0.12)); }
+body[data-theme=dark] .theme-pick.lg-segmented { background: rgb(255 255 255 / 0.06); }
+body[data-theme] .theme-pick.lg-segmented span { border: 0 !important; border-radius: var(--radius-choice) !important; background: transparent !important; color: var(--color-secondary, var(--color-text)) !important; transition: color 200ms ease; }
+body[data-theme] .theme-pick.lg-segmented input:checked + span { color: var(--color-text) !important; font-weight: 600; }
+
+/* ---------- Slider ---------- */
+body[data-theme] input[type=range]::-webkit-slider-thumb {
+  scale: calc(1 + 0.4 * var(--lg-lift, 0));
+  transition: none;
+}
+body[data-theme] input[type=range][data-lg-lifted]::-webkit-slider-thumb {
+  background: color-mix(in srgb, var(--color-raised) calc((1 - var(--lg-lift, 0) * 0.6) * 100%), transparent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--lg-shadow) calc(var(--lg-lift, 0) * 100%), transparent), inset 0 0 0 0.5px var(--lg-edge);
+}
+/* The old floating range lens is retired; the thumb itself lifts. */
+.liquid-range-lens { display: none !important; }
+
+/* ---------- Switch ---------- */
+body[data-theme] :is(#notifications, #home-typewriter, #home-quote-shuffle)::before {
+  translate: calc(var(--switch-travel) * var(--lg-switch, 0)) 0 !important;
+  scale: calc(1 + 0.3 * var(--lg-lift, 0)) calc(1 + 0.15 * var(--lg-lift, 0)) !important;
+  transition: none !important;
+}
+body[data-theme] :is(#notifications, #home-typewriter, #home-quote-shuffle):not([data-lg-switch]):checked::before { translate: var(--switch-travel) 0 !important; }
+body[data-theme] :is(#notifications, #home-typewriter, #home-quote-shuffle)[data-lg-switch] {
+  background-color: color-mix(in srgb, var(--color-accent) calc(var(--lg-switch, 0) * 100%), var(--lg-track)) !important;
+  transition: none !important;
+}
+
+/* ---------- Menu ---------- */
+body[data-theme] [popover] {
+  transform-origin: var(--lg-origin, top left);
+  transition: opacity 180ms var(--lg-ease-out), scale 180ms var(--lg-ease-out), translate 180ms var(--lg-ease-out), overlay 180ms allow-discrete, display 180ms allow-discrete;
+}
+body[data-theme] [popover]:popover-open { opacity: 1; scale: 1; }
+@starting-style { body[data-theme] [popover]:popover-open { opacity: 0; scale: 0.95; } }
+body[data-theme] [popover]:not(:popover-open) {
+  opacity: 0; scale: 0.95;
+  transition-duration: 144ms; /* exits 20% shorter */
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+body[data-theme][data-material=blur] [popover] {
+  background-color: var(--lg-surface) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  backdrop-filter: blur(16px) saturate(1.6);
+}
+
+/* ---------- Card grid entrance (stagger 30ms) ---------- */
+body[data-motion=full] .main-panel[data-pointer-navigation] :is(.product, .category-card, .creator-card) {
+  animation: lg-settle 220ms var(--lg-ease-out) both;
+  animation-delay: calc(min(var(--lg-i, 0), 12) * 30ms);
+}
+@keyframes lg-settle { from { opacity: 0; translate: 0 6px; } to { opacity: 1; translate: 0 0; } }
+
+/* Grid columns follow the eased card size. */
+body[data-theme] .category-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--category-card-live, var(--category-card-min))), 1fr)) !important; }
+
+/* Counts line up as they change. */
+body[data-theme] :is(.count, .tag, .chip, .nav small, .creator-count, .category-count, #scan-elapsed) { font-variant-numeric: tabular-nums; }
+
+/* ---------- Fallbacks ---------- */
+body:not([data-motion=full]) [popover], body:not([data-motion=full]) .main-panel :is(.product, .category-card, .creator-card) { transition: none !important; animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme] [popover] { transition: none !important; }
+  body[data-theme] .main-panel :is(.product, .category-card, .creator-card) { animation: none !important; }
+}
+body[data-material=solid] .lg-glass { background-image: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+body[data-material=solid] .unified-shell .navigation-selection { backdrop-filter: none !important; background-image: none !important; }
+@media (forced-colors: active) {
+  body[data-theme] .unified-shell .navigation-selection { background: Highlight !important; box-shadow: none !important; backdrop-filter: none !important; }
+  html body[data-theme] .unified-shell .rail .nav.active, html body[data-theme] .unified-shell .rail .nav.active svg { color: HighlightText !important; }
+  body[data-theme] .lg-glass { background-image: none !important; backdrop-filter: none !important; }
+  body[data-theme] [data-pressed]::after { opacity: 0; }
+  body[data-theme] .theme-pick .lg-segmented-thumb { background: Highlight; }
+}
+
+/* Settings > Glass effects sample: a free Glisse lens over the striped card. */
+body[data-theme] .glass-demo-lens.lg-glass {
+  background-color: var(--lg-lens) !important;
+  -webkit-backdrop-filter: var(--lg-filter, none) blur(var(--lg-blur)) saturate(1.5) !important;
+  backdrop-filter: var(--lg-filter, none) blur(var(--lg-blur)) saturate(1.5) !important;
+  cursor: grab;
+}

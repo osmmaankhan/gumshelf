@@ -36,12 +36,12 @@
   const refraction = document.body.dataset.refractionProof === 'passed';
   const message = solid ? 'Glass controls are paused while solid surfaces are active.'
    : surface.value === 'desktop' ? 'Try the effects in this sample. Windows controls the blur behind the desktop window.'
-   : 'Frost also adjusts the toolbar. Bend and Rim also apply to the navigation indicator. Dispersion is shown in this sample.';
-  const helpText = !solid && !refraction ? message + ' Bend and Dispersion need renderer support.' : message;
+   : 'Bend, Dispersion, Frost and Rim apply live to buttons, search fields, menus and the sidebar lens. Press and hold a sidebar item to see the lens bend.';
+  const helpText = message;
   if (help.textContent !== helpText) help.textContent = helpText;
   for (const control of controls) {
    const input = document.getElementById(inputId(control));
-   input.disabled = solid || (!refraction && ['refraction','dispersion'].includes(control.id));
+   input.disabled = solid;
    const output = document.getElementById(input.id + '-value');
    const text = input.value + (control.unit ? ' ' + control.unit : '');
    if (output.textContent !== text) output.textContent = text;
