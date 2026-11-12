@@ -1,7 +1,6 @@
 /* Shared opaque selection within the single native/in-page optical plane. */
 :root { view-transition-name:none; }
 body[data-theme] .rail .navigation-selection { position:absolute; top:var(--space-zero); left:var(--space-zero); pointer-events:none; border:var(--space-hairline) solid var(--color-border); border-radius:var(--radius-pill); background:var(--color-raised); }
-body[data-theme] .rail .nav.active { background:transparent!important; border-color:transparent!important; }
 body[data-theme] .rail .nav { transition:color var(--motion-hover) var(--motion-ease-out); }
 body[data-theme] .rail .nav.active svg { color:var(--color-accent); }
 /* Component motion uses the same easing family. */

@@ -38,6 +38,8 @@
   --radius-hero: 24px;
   /* radius.pill | ESTIMATED | unit: px | source: project, convx-apple, hig-css */
   --radius-pill: 9999px;
+  --radius-field: var(--radius-pill); /* search inputs, filter chips, tags */
+  --radius-choice: var(--radius-control); /* nav items, buttons, selects, checkboxes, pickers */
   /* size.compact | ESTIMATED | unit: px | source: project, ms-touch */
   --size-compact: 32px;
   /* size.default | ESTIMATED | unit: px | source: project, ms-touch */
@@ -383,3 +385,5 @@
 [data-mono="true"][data-theme="dark"] { --color-canvas: var(--color-mono-light-accent); --color-surface: var(--color-mono-light-accent); --color-text: var(--color-mono-dark-accent); }
 @media (prefers-color-scheme: dark) { [data-mono="true"]:not([data-theme="light"]) { --color-canvas: var(--color-mono-light-accent); --color-surface: var(--color-mono-light-accent); --color-text: var(--color-mono-dark-accent); } }
 @media (max-width: 640px) { .layout { grid-template-columns: minmax(0, 1fr) !important; } .sidebar { position: static !important; } }
+
+body[data-theme-variant="black"] { --color-canvas:#000000; --color-surface:#0A0A0A; --color-raised:#141414; --color-border:rgba(255,255,255,.10); }

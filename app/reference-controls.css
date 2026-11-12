@@ -11,7 +11,7 @@
 .accent-channel input { min-width:var(--space-zero); width:100%; }
 .accent-footer { display:flex; justify-content:flex-end; gap:var(--space-md); flex-wrap:wrap; }
 .accent-dialog .field { margin-block:var(--space-md); }
-body[data-theme] :is(.row-actions .arrow,.detail-top .icon-button,.gallery-controls .icon-button) { background:var(--color-raised)!important; border-color:var(--color-border)!important; border-radius:var(--radius-pill); }
+body[data-theme] :is(.row-actions .arrow,.detail-top .icon-button,.gallery-controls .icon-button) { background:var(--color-raised)!important; border-color:var(--color-border)!important; }
 body[data-theme] .search:focus-visible,body[data-theme] .select:focus-visible { box-shadow:var(--space-zero) var(--space-zero) var(--space-zero) var(--space-xs) var(--color-raised); }
 body[data-theme] .progress { height:var(--space-md); border-radius:var(--radius-pill); overflow:hidden; }
 body[data-theme] .progress i { border-radius:inherit; }
@@ -45,7 +45,6 @@ body[data-theme] .navigation-selection.glass-host[data-glass-mode=lens]>.glass-o
 body[data-theme=dark] .navigation-selection.glass-host[data-glass-mode=lens]>.glass-optics { background:var(--color-dark-lens-tint); }
 body[data-theme] :is(.row-actions .arrow,.detail-top .icon-button,.gallery-controls .icon-button) { background:var(--color-canvas)!important; }
 body[data-theme] .progress { background:var(--color-canvas)!important; }
-body[data-theme] .product.selected { border-color:var(--color-focus)!important; box-shadow:inset var(--space-zero) var(--space-zero) var(--space-zero) var(--space-hairline) var(--color-focus); }
 body[data-theme] input[type=range] { appearance:none; -webkit-appearance:none; background:transparent; height:var(--size-compact); }
 body[data-theme] input[type=range]::-webkit-slider-runnable-track { height:var(--space-sm); border-radius:var(--radius-pill); background:linear-gradient(to right,var(--color-accent) var(--range-percent,0%),var(--color-canvas) var(--range-percent,0%)); }
 body[data-theme] input[type=range]::-webkit-slider-thumb { appearance:none; -webkit-appearance:none; width:var(--size-icon-large); height:var(--size-icon-large); margin-top:calc((var(--space-sm) - var(--size-icon-large))/2); border:var(--space-hairline) solid var(--color-border); border-radius:var(--radius-pill); background:var(--color-mono-dark-accent); box-shadow:var(--glass-shadow); }
@@ -58,14 +57,13 @@ body[data-theme] input[type=range]::-webkit-slider-thumb { appearance:none; -web
 body[data-theme] .rail { position:relative; }
 body[data-theme] .search { padding-inline-end:calc(var(--space-sm) + var(--size-compact) + var(--space-sm)); }
 body[data-theme] input[type=search]::-webkit-search-cancel-button { appearance:none; }
-.search-clear { position:absolute; inset-inline-end:var(--space-sm); top:50%; transform:translateY(-50%); display:grid; place-items:center; width:var(--size-compact); height:var(--size-compact); padding:0; border:var(--space-zero); border-radius:var(--radius-control); background:transparent; color:var(--color-text); }
-.search-clear:hover { background:var(--color-raised); }
+.search-clear { position:absolute; inset-inline-end:var(--space-sm); top:50%; transform:translateY(-50%); display:grid; place-items:center; width:var(--size-compact); height:var(--size-compact); padding:0; border:var(--space-zero); border-radius:var(--radius-choice); background:transparent; color:var(--color-text); }
 .search-clear[hidden] { display:none; }
 body[data-theme] .search-clear svg { position:static; transform:none; width:var(--size-icon-small); height:var(--size-icon-small); color:inherit; }
 @media (forced-colors:active) { .search-clear { background:ButtonFace; color:ButtonText; border:var(--space-hairline) solid ButtonText; } }
 /* Final Home micro-interaction: reveal the available action, no ambient motion. */
 body[data-theme] .ecosystem-tools button svg { transition:transform var(--motion-hover) var(--motion-ease-out); }
-body[data-theme] .ecosystem-tools button:not(:disabled):is(:hover,:focus-visible) { color:var(--color-text); border-color:var(--color-border); }
+body[data-theme] .ecosystem-tools button:not(:disabled):focus-visible { color:var(--color-text); }
 body[data-motion=full] .ecosystem-tools button:not(:disabled):hover svg { transform:translateY(calc(var(--space-tiny) * -1)); }
 body[data-motion=reduced] .ecosystem-tools button svg { transition:none; transform:none; }
 body[data-theme] button.search-clear:active:not(:disabled) { transform:translateY(-50%) scale(var(--motion-press-scale)); }
