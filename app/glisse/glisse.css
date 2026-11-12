@@ -269,3 +269,26 @@ body[data-theme] .row-actions .select-row input[type=checkbox] {
   border-radius: var(--radius-choice) !important; border: 1px solid var(--color-border) !important; background-color: var(--color-raised) !important;
 }
 body[data-theme] .row-actions .select-row input[type=checkbox]:checked { background-color: var(--color-accent) !important; border-color: transparent !important; }
+
+/* ================= 0.4.34: one material system =================
+   Four stable surfaces share one glass: top bar, sidebar, main panel, footer.
+   Same tint family, hairline edge, rim and blur; the reading surface is a
+   little more opaque so text keeps 4.5:1. Controlled by Frost and Rim. */
+body[data-theme] { --lg-panel-alpha: 80%; --lg-read-alpha: 90%; }
+body[data-theme=dark] { --lg-panel-alpha: 72%; --lg-read-alpha: 86%; }
+html body[data-theme][data-material=blur] :is(.unified-shell .rail, .topline, .unified-shell .footer) {
+  background-color: color-mix(in srgb, var(--color-surface) var(--lg-panel-alpha), transparent) !important;
+  border: 1px solid var(--lg-surface-edge) !important;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--lg-shadow) 55%, transparent), inset 0 1px 0 rgb(255 255 255 / calc(var(--lg-rim-alpha, .6) * .55)) !important;
+  -webkit-backdrop-filter: blur(var(--lg-panel-blur, 24px)) saturate(1.5) !important;
+  backdrop-filter: blur(var(--lg-panel-blur, 24px)) saturate(1.5) !important;
+}
+html body[data-theme][data-material=blur] .unified-shell .main-panel {
+  background-color: color-mix(in srgb, var(--color-surface) var(--lg-read-alpha), transparent) !important;
+  border: 1px solid var(--lg-surface-edge) !important;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--lg-shadow) 55%, transparent), inset 0 1px 0 rgb(255 255 255 / calc(var(--lg-rim-alpha, .6) * .55)) !important;
+  -webkit-backdrop-filter: blur(var(--lg-panel-blur, 24px)) saturate(1.5) !important;
+  backdrop-filter: blur(var(--lg-panel-blur, 24px)) saturate(1.5) !important;
+}
+html body[data-theme][data-material=blur] .unified-shell :is(.rail, .topline) > .glass-optics { display: none !important; }
+body[data-theme=dark][data-theme-variant=black] { --lg-panel-alpha: 70%; --lg-read-alpha: 84%; }

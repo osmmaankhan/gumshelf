@@ -54,7 +54,7 @@ body[data-theme] .search { padding-left:calc(var(--space-lg) + var(--size-icon) 
 }
 /* Small windows use one content scroller: details first, then the product list. */
 @media (max-width:960px) {
- body[data-theme] .content-area.with-detail { flex-direction:column; overflow-y:auto; }
+ body[data-theme] .content-area.with-detail { flex-direction:column; overflow:visible; }
  body[data-theme] .with-detail .detail { order:-1; flex:0 0 auto; overflow:visible; }
  body[data-theme] .with-detail .collection { flex:0 0 auto; overflow:visible; padding-top:var(--space-section); }
 }
@@ -116,4 +116,71 @@ body[data-theme] .detail-section { margin-top:var(--space-lg); }
  body[data-theme] .main-panel:has(> .content-area) { overflow-y:auto; }
  body[data-theme] .main-panel > .content-area { flex:none; overflow:visible; }
  body[data-theme] .main-panel > .content-area .collection { overflow:visible; }
+}
+
+/* The main panel owns library and Home scrolling across re-renders. */
+body[data-theme] .discovery-layout .main-panel,
+body[data-theme] .main-panel:has(.home-v2) {
+ overflow-y:auto;
+ overflow-x:hidden;
+}
+body[data-theme] .discovery-layout .main-panel > .content-area,
+body[data-theme] .main-panel .home-v2 .content-area {
+ display:grid;
+ grid-template-columns:minmax(0,1fr);
+ grid-template-rows:auto auto;
+ flex:none;
+ height:auto;
+ max-height:none;
+ min-height:0;
+ overflow:visible;
+}
+body[data-theme] .discovery-layout .content-area > .collection,
+body[data-theme] .main-panel .home-v2 .collection {
+ height:auto;
+ max-height:none;
+ min-height:0;
+ overflow:visible;
+}
+body[data-theme] .main-panel .home-v2 {
+ flex:none;
+ height:auto;
+ max-height:none;
+ overflow:visible;
+}
+body[data-theme] .main-panel .home-v2:is(.is-idle,.is-searching) .home-hero {
+ width:100%;
+ max-width:var(--layout-wide);
+ margin:0 auto;
+ padding:44px 32px 30px;
+}
+body[data-theme] :is(.discovery-layout .detail,.home-v2 .detail) {
+ position:sticky;
+ top:var(--space-md);
+ align-self:start;
+ width:auto;
+ min-width:0;
+ height:auto;
+ max-height:calc(100vh - 144px);
+ overflow:auto;
+}
+@media (min-width:961px) {
+ body[data-theme] .discovery-layout .main-panel > .content-area.with-detail,
+ body[data-theme] .main-panel .home-v2 .content-area.with-detail {
+  grid-template-columns:minmax(0,1fr) minmax(var(--layout-min-width),1fr);
+ }
+ body[data-theme] .main-panel .home-v2 .with-detail .detail { grid-column:2; grid-row:1/-1; }
+}
+@media (max-width:960px) {
+ body[data-theme] .discovery-layout .main-panel > .content-area.with-detail { grid-template-rows:auto auto auto; }
+ body[data-theme] .main-panel .home-v2 .with-detail .detail { grid-row:1; }
+ body[data-theme] :is(.discovery-layout .detail,.home-v2 .detail) {
+  position:relative;
+  top:auto;
+  max-height:none;
+  overflow:visible;
+ }
+}
+@media (max-width:768px) {
+ body[data-theme] .main-panel .home-v2:is(.is-idle,.is-searching) .home-hero { padding:30px 18px 22px; }
 }

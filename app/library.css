@@ -54,7 +54,7 @@ body[data-theme] .discovery-layout .product:focus-visible {
 body[data-theme] .discovery-layout .product .cover-button {
  width:72px;
  height:auto;
- aspect-ratio:4/3;
+ aspect-ratio:16/10;
  border-radius:var(--radius-control);
 }
 body[data-theme] .discovery-layout .product-copy { display:flex; flex-direction:column; gap:var(--space-xs); }
@@ -153,7 +153,7 @@ body[data-theme] .discovery-layout .product {
 }
 body[data-theme] .discovery-layout .product .cover-button {
  width:100%;
- aspect-ratio:16/9;
+ aspect-ratio:16/10;
 }
 body[data-theme] .discovery-layout .product .cover-button img { width:100%; height:100%; object-fit:cover; }
 body[data-theme] .discovery-layout .product .title-button {
@@ -405,3 +405,92 @@ body[data-theme] .discovery-layout .product-list { display:grid; grid-template-c
 .search-suggest-art { width:40px; height:32px; flex:none; }
 .search-suggest-art img,.search-suggest-art svg { width:100%; height:100%; object-fit:cover; }
 .card-size { display:flex; align-items:center; gap:8px; }
+
+/* Audit layout: preview-led cards with two visible actions. */
+body[data-theme] .main-panel .product {
+ display:grid;
+ grid-template-columns:minmax(0,45fr) minmax(0,55fr);
+ grid-template-rows:1fr auto;
+ align-items:start;
+ min-width:0;
+}
+body[data-theme] .main-panel .product .cover-button {
+ width:100%;
+ height:auto;
+ aspect-ratio:16/10;
+ border:0;
+}
+body[data-theme] .main-panel .product .cover-button :is(img,.art,.hidden-art) {
+ width:100%;
+ height:100%;
+ min-height:0;
+ object-fit:cover;
+}
+body[data-theme] .main-panel .product-title {
+ display:-webkit-box;
+ -webkit-box-orient:vertical;
+ -webkit-line-clamp:2;
+ overflow:hidden;
+ white-space:normal;
+ overflow-wrap:anywhere;
+ text-align:start;
+}
+body[data-theme] .main-panel .product-copy { display:flex; flex-direction:column; gap:var(--space-xs); }
+body[data-theme] .main-panel .product .row-actions {
+ grid-column:1/-1;
+ display:flex;
+ justify-content:flex-end;
+ border:0;
+ margin-inline:0;
+}
+body[data-theme] .main-panel .product .select-row { opacity:0; pointer-events:none; margin-right:auto; }
+body[data-theme] .main-panel .product:is(:hover,:focus-within) .select-row,
+body[data-theme].has-checked .main-panel .product .select-row { opacity:1; pointer-events:auto; }
+body[data-theme] .main-panel .product-actions-menu > :is(.btn,.product-archive-status),
+body[data-theme] #quote-actions-menu > .btn {
+ display:flex;
+ width:100%;
+ justify-content:flex-start;
+ white-space:nowrap;
+}
+body[data-theme] #quote-actions-menu { grid-auto-flow:row; }
+body[data-theme] .discovery-layout .toolbar { display:flex; flex-wrap:nowrap; }
+body[data-theme] .discovery-layout .toolbar .search-wrap { min-width:0; flex:1 1 0; }
+body[data-theme] .discovery-layout .toolbar > :is(.select-shell,.btn) { flex:none; }
+body[data-theme] .filters-panel {
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:var(--space-md);
+ padding:var(--space-sm) var(--content-gutter) var(--space-md);
+}
+body[data-theme] .filters-panel[hidden] { display:none; }
+body[data-theme] .filters-panel .software-scope { flex-basis:100%; }
+/* At most eight cards are emitted. Four columns give desktop shelves two rows. */
+body[data-theme] .main-panel .home-v2 .home-row {
+ display:grid;
+ grid-auto-flow:row;
+ grid-auto-columns:auto;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ overflow:visible;
+ scroll-snap-type:none;
+ min-height:0;
+}
+body[data-theme] .main-panel .home-v2 .home-row.is-few { grid-template-columns:repeat(auto-fit,minmax(min(100%,168px),220px)); }
+body[data-theme] .main-panel .home-v2 .home-row > .home-card { min-width:0; }
+@media (max-width:960px) {
+ body[data-theme] .main-panel .home-v2 .home-row { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ body[data-theme] .main-panel .home-v2 .home-row > .home-card:nth-child(n+5) { display:none; }
+}
+@media (max-width:768px) {
+ body[data-theme] .discovery-layout .toolbar { gap:var(--space-xs); }
+ body[data-theme] .discovery-layout .toolbar > .select-shell { flex:0 1 9rem; min-width:0; }
+ body[data-theme] .discovery-layout .toolbar > .select-shell select { width:100%; min-width:0; }
+ body[data-theme] .discovery-layout .toolbar .search-wrap { flex-basis:0; }
+}
+
+body[data-theme] .main-panel .home-v2 .product-list {
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--product-card-live,var(--product-card-min,340px))),1fr));
+ gap:var(--space-sm);
+}
