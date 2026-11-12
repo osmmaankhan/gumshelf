@@ -377,3 +377,21 @@ body[data-theme] #quote-library-search { border-radius:var(--radius-field); }
  body[data-theme] :is(.btn,.icon-button,.chip,.nav,.product,.category-card,.creator-card,.home-pick):hover { outline:1px dashed Highlight; outline-offset:1px; }
  body[data-theme] :is(.product.selected,.unified-shell .rail .nav.active) { outline:2px solid Highlight; outline-offset:1px; }
 }
+
+/* Creator search suggestions */
+.search-wrap:has(.creator-suggest) { position:relative; z-index:30; }
+.creator-suggest { position:absolute; top:calc(100% + 6px); left:0; width:100%; z-index:31; box-sizing:border-box; padding:4px; border-radius:var(--radius-card); background:var(--lg-surface, var(--color-raised)); box-shadow:0 8px 24px #0002; backdrop-filter:blur(var(--lg-blur,12px)) saturate(1.5); }
+.creator-suggest-option { height:40px; box-sizing:border-box; display:flex; align-items:center; gap:10px; padding:3px 8px; border-radius:var(--radius-choice); cursor:pointer; animation:creator-suggest-enter 160ms ease-out both; animation-delay:calc(var(--i) * 30ms); }
+.creator-suggest-option[aria-selected=true] { background:color-mix(in srgb, var(--color-focus) 14%, transparent); }
+.creator-suggest-option .creator-initial, .creator-suggest-type-icon { flex:none; width:30px; height:30px; display:grid; place-items:center; overflow:hidden; border-radius:50%; font-size:12px; }
+.creator-suggest-option .creator-initial img { width:100%; height:100%; object-fit:cover; }
+body[data-theme] .search-wrap .creator-suggest-type-icon svg { position:static; transform:none; width:18px; height:18px; }
+.creator-suggest-copy { display:flex; flex-direction:column; min-width:0; line-height:1.15; }
+.creator-suggest-copy strong, .creator-suggest-copy small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.creator-suggest-copy strong { font-size:12px; }
+.creator-suggest-copy small, .creator-suggest-empty { font-size:11px; opacity:.7; font-variant-numeric:tabular-nums; }
+.creator-suggest-empty { height:40px; display:flex; align-items:center; padding:0 8px; }
+@keyframes creator-suggest-enter { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+body:not([data-motion=full]) .creator-suggest-option { animation:none; }
+@media (prefers-reduced-motion:reduce) { .creator-suggest-option { animation:none; } }
+@media (forced-colors:active) { .creator-suggest-option[aria-selected=true] { outline:2px solid Highlight; outline-offset:-2px; } }
