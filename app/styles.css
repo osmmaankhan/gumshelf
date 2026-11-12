@@ -401,3 +401,5 @@ body[data-theme] dialog[open] {
   }
   body[data-theme] .rail .nav.active svg { color: HighlightText; }
 }
+
+.rail-bottom .nav.rail-link{height:42px;gap:4px}.rail-bottom .rail-link svg{width:18px;height:18px}
