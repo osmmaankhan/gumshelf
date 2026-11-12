@@ -110,14 +110,19 @@
    * flies from its stacked spot to its place in the row). Reduced motion: no stack. */
   let spread = false, panelBound = null;
   const JUMP = '.home-v2 .home-shelf[aria-labelledby="jump-back-title"]';
+  // First screen = hero + a bottom band shared by the quote (centre) and the
+  // Jump back in stack (left, peeking below the fold). Heights are measured, so it
+  // fits any window size.
   function fitFirstScreen() {
     const v2 = app.querySelector('.home-v2.is-idle'), panel = document.querySelector('.main-panel');
     const heroEl = v2?.querySelector('.home-hero');
     if (!v2 || !panel || !heroEl) return;
     const quote = v2.querySelector('.home-quote-strip');
-    const quoteH = quote ? quote.offsetHeight + parseFloat(getComputedStyle(quote).marginTop) : 0;
-    const peek = v2.querySelector(JUMP) ? 132 : 0; // constant, so spreading never moves the hero
-    heroEl.style.setProperty('min-height', Math.max(0, panel.clientHeight - quoteH - peek) + 'px', 'important');
+    const quoteH = quote ? quote.offsetHeight : 0;
+    const quoteM = quote ? parseFloat(getComputedStyle(quote).marginTop) || 0 : 0;
+    const bottomGap = 26;
+    v2.style.setProperty('--quote-band', (quoteH + bottomGap) + 'px');
+    heroEl.style.setProperty('min-height', Math.max(0, panel.clientHeight - quoteH - quoteM - bottomGap) + 'px', 'important');
   }
   function spreadStack(scrollTo) {
     const shelf = app.querySelector(JUMP);

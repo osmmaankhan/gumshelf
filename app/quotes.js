@@ -21,7 +21,7 @@
  }
  function shuffle(items,random=Math.random){const out=[...items];for(let i=out.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
  function settingsPatch(value){const out={};if('homeQuoteSource'in value){if(!['books','custom','both','off'].includes(value.homeQuoteSource))throw Error('Choose a quote source.');out.homeQuoteSource=value.homeQuoteSource;}if('homeQuoteBooks'in value){if(!Array.isArray(value.homeQuoteBooks)||value.homeQuoteBooks.length>books.length||value.homeQuoteBooks.some(id=>!books.some(b=>b.id===id)))throw Error('Choose books from the quote collection.');out.homeQuoteBooks=[...new Set(value.homeQuoteBooks)];}if('homeQuoteTheme'in value){if(value.homeQuoteTheme!==''&&!themes.includes(value.homeQuoteTheme))throw Error('Choose an available quote theme.');out.homeQuoteTheme=value.homeQuoteTheme;}if('homeQuoteShuffle'in value){if(typeof value.homeQuoteShuffle!=='boolean')throw Error('Choose whether to shuffle quotes.');out.homeQuoteShuffle=value.homeQuoteShuffle;}return out;}
- const attribution=q=>q?[q.author,q.book,q.page].filter(Boolean).join(' · '):'';
+ const attribution=q=>q?[q.author,q.book,q.page].filter(Boolean).join(' • '):'';
  const shuffleEnabled=settings=>settings.homeQuoteShuffle===undefined?source(settings)!=='custom':settings.homeQuoteShuffle;
  return {get books(){return books;},get themes(){return themes;},get quotes(){return records;},configure,source,select,home,shuffle,shuffleEnabled,settingsPatch,attribution};
 });

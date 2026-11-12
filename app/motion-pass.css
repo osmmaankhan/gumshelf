@@ -152,3 +152,47 @@ body[data-theme] .home-shelf.is-stacked .home-card-art { box-shadow: 0 14px 34px
 }
 body:not([data-motion=full]) .home-shelf.is-stacked { transform: none !important; }
 @media (forced-colors: active) { body[data-theme] .home-shelf.is-stacked .home-row::before { background: CanvasText; } }
+
+/* ================= 0.4.39: the user's second Figma pass ================= */
+/* Headline on two balanced lines; counts as small pills. */
+body[data-theme] .home-v2 .home-title { max-width: 20ch !important; font-size: clamp(42px, 4.6vw, 70px) !important; letter-spacing: -0.04em !important; }
+body[data-theme] .home-v2 .home-sub.home-stats-pills { margin-top: 36px !important; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; font-size: 15px; color: var(--color-text); }
+body[data-theme] .home-stat { display: inline-flex; align-items: center; gap: 6px; }
+body[data-theme] .home-stat b {
+  display: inline-grid; place-items: center; min-width: 30px; height: 26px; padding: 0 7px; box-sizing: border-box;
+  border-radius: 7px; border: 1px solid color-mix(in srgb, var(--color-text) 14%, transparent); background: var(--color-raised);
+  font-weight: 650; font-size: 14px; font-variant-numeric: tabular-nums; box-shadow: 0 1px 2px rgb(20 20 40 / .06);
+}
+/* More air: title → pills → prompt; prompt a little narrower; chips tight; shapes with room above. */
+body[data-theme] .home-v2 .home-prompt { margin-top: 52px !important; width: min(660px, 100%) !important; }
+body[data-theme] .home-v2 .home-prompt-chips { margin-top: 18px !important; }
+body[data-theme] .home-v2 .home-shapes { margin-top: 52px !important; }
+
+/* Bottom band: quote centred with its menu beside it, attribution under it. */
+body[data-theme] .home-quote-strip {
+  display: grid !important; grid-template-columns: auto auto; justify-content: center; align-items: center;
+  column-gap: 26px; row-gap: 4px; margin-top: 0 !important; max-width: min(820px, 100%);
+}
+body[data-theme] .home-quote-strip #home-headline { grid-column: 1; grid-row: 1; font-size: 18px !important; font-weight: 650 !important; }
+body[data-theme] .home-quote-strip .quote-attribution { grid-column: 1; grid-row: 2; font-size: 14px !important; color: var(--color-text) !important; opacity: .82; }
+body[data-theme] .home-quote-strip .quote-theme { display: none !important; }
+body[data-theme] .home-quote-strip > :last-child { grid-column: 2; grid-row: 1 / span 2; margin: 0 !important; }
+
+/* The stack shares the bottom band at the left (it rises by the band's height). */
+@media (min-width: 961px) {
+  body[data-theme] .home-v2 .home-shelf.is-stacked {
+    margin-top: calc(-1 * var(--quote-band, 110px) - 6px) !important; margin-left: 40px !important;
+    width: 360px; position: relative; z-index: 2;
+  }
+}
+/* Scale the vertical rhythm with the window height so the bottom band always fits. */
+body[data-theme] .home-v2 .home-hero { padding-top: clamp(12px, 2.4vh, 28px) !important; }
+body[data-theme] .home-v2 .home-title { font-size: clamp(38px, min(4.6vw, 7.4vh), 70px) !important; }
+body[data-theme] .home-v2 .home-sub.home-stats-pills { margin-top: clamp(14px, 3.4vh, 36px) !important; }
+body[data-theme] .home-v2 .home-prompt { margin-top: clamp(20px, 4.8vh, 52px) !important; }
+body[data-theme] .home-v2 .home-prompt .search { height: clamp(48px, 6vh, 64px) !important; }
+body[data-theme] .home-v2 .home-prompt-chips { margin-top: clamp(10px, 1.7vh, 18px) !important; }
+body[data-theme] .home-v2 .home-shapes { margin-top: clamp(14px, 4.8vh, 52px) !important; height: clamp(56px, 7.4vh, 76px) !important; }
+body[data-theme] .home-v2 .home-shape { height: clamp(56px, 7.4vh, 76px); }
+body[data-theme] .home-v2 .home-shape-body { width: clamp(46px, 6.2vh, 64px); height: clamp(46px, 6.2vh, 64px); }
+body[data-theme] .home-v2 .home-prompt .search-wrap > svg { top: 50% !important; }

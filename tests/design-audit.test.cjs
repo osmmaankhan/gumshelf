@@ -52,7 +52,7 @@ test('Home keeps its prompt structure, hides shelves during queries and removes 
  vm.runInContext("state.products=[{id:'1',name:'Font',creator:'Amy'}];state.settings.homeQuoteSource='off'",ctx);
  const idle=vm.runInContext('homeHTML()',ctx),searching=vm.runInContext("query='font';homeHTML()",ctx);
  for(const html of [idle,searching]){
-  assert.match(html,/<h1 class="home-title">What are you making today\?<\/h1>/);
+  assert.match(html,/<h1 class="home-title">What&#39;s the new creative goal you have\?<\/h1>/);assert.match(html,/class="home-stat"/);
   assert.match(html,/class="home-prompt"><div class="search-wrap">/);
   assert.match(html,/class="home-prompt-bar"><div class="home-mode" role="radiogroup"/);
   assert.equal((html.match(/class="home-try"/g)||[]).length,3);
