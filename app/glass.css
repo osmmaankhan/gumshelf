@@ -14,7 +14,11 @@ body[data-theme] .glass-host[data-glass-mode=lens] > .glass-optics { backdrop-fi
 body[data-theme=light] .glass-host[data-glass-mode=lens][data-glass-profile=candidate] > .glass-optics { background:var(--color-light-lens-tint); }
 body[data-theme=dark] .glass-host[data-glass-mode=lens][data-glass-profile=candidate] > .glass-optics { background:var(--color-dark-lens-tint); }
 /* Native Mica and accessibility modes do not stack with in-page optics. */
-body[data-theme][data-material=blur][data-native-backdrop=acrylic] { background:transparent!important; }
+/* Window recorders (Game Bar, Snipping Tool) see only the page's own pixels, never the Acrylic behind it,
+   and record each pixel as color x alpha over black. A 90% tint near Acrylic's own shade records as soft glass
+   while the desktop still shows faintly on screen. */
+body[data-theme=dark][data-material=blur][data-native-backdrop=acrylic] { background:rgba(66,66,70,.9)!important; }
+body[data-theme=light][data-material=blur][data-native-backdrop=acrylic] { background:rgba(246,246,248,.92)!important; }
 body[data-theme][data-material=blur][data-native-backdrop=acrylic] :is(.rail,.topline) { backdrop-filter:none!important; }
 body[data-theme] .glass-host[data-glass-mode=solid] > .glass-optics { display:none; }
 @media (prefers-reduced-transparency:reduce),(prefers-contrast:more),(forced-colors:active) {

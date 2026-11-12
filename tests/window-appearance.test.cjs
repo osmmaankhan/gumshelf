@@ -58,3 +58,12 @@ test('shell tint bounds keep foreground text readable over extreme backdrops',()
   }
  }
 });
+test('desktop glass paints a near-opaque page tint so window recordings are not black',()=>{
+ // Recorders capture only page pixels (color x alpha over black); the Acrylic behind them never appears.
+ const css=require('node:fs').readFileSync(require('node:path').join(__dirname,'../app/glass.css'),'utf8');
+ for(const theme of ['dark','light']){
+  const rule=css.match(new RegExp(String.raw`body\[data-theme=${theme}\]\[data-material=blur\]\[data-native-backdrop=acrylic\] \{ background:rgba\((\d+),(\d+),(\d+),([\d.]+)\)`));
+  assert.ok(rule,theme+' acrylic page tint');const [r,g,b,a]=rule.slice(1).map(Number);
+  assert.ok(a>=.85&&Math.min(r,g,b)*a>=40,theme+' records as a visible background');
+ }
+});
