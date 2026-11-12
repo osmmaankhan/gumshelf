@@ -29,12 +29,14 @@
  ];
  const softwareRules=[['Blender',/\bblender\b|\.blend\b/i],['After Effects',/after effects|\.aep\b/i],['Photoshop',/photoshop|\.?\bpsd\b/i],['Figma',/\bfigma\b/i],['Procreate',/\bprocreate\b/i],['Canva',/\bcanva\b/i],['Notion',/\bnotion\b/i],['Illustrator',/\billustrator\b/i],['Premiere Pro',/\bpremiere\b/i],['DaVinci Resolve',/davinci|resolve studio/i],['Unity',/\bunity\b/i],['Unreal Engine',/unreal|\bue[45]\b/i],['ZBrush',/\bzbrush\b/i],['Houdini',/\bhoudini\b/i]];
  const mockupKinds=[['devices','Devices',/iphone|ipad|macbook|laptop|phone|device|screen|spotify/i],['apparel','Apparel',/shirt|hoodie|apparel|clothing|merch|cap\b/i],['packaging','Packaging',/packag|mailer|bottle|bag\b|box\b|pouch|can\b|cup\b/i],['posters','Posters',/poster|billboard/i],['presentations','Presentations',/presentation|slide|16:9/i],['stationery','Paper & stationery',/paper|stationery|business card|stamp|book|vellum|sticker/i],['other','Other mockups',/./]];
- function infer(p){const title=String(p.name||p.title||'');const explicit=types.find(t=>t.label===p.category);let type=rules.find(([,pattern])=>pattern.test(title))?.[0];let basis='Title';
+ function infer(p){const title=String(p.name||p.title||'');const demoFormat=p.analysisSource==='AI review (demo)'?String(p.format||''):'';const explicit=types.find(t=>t.label===p.category);let type=rules.find(([,pattern])=>pattern.test(title))?.[0];let basis='Title';
+  // Fictional records keep software names in their format labels.
+  if(!type&&demoFormat){type=rules.find(([,pattern])=>pattern.test(title+' '+demoFormat))?.[0];if(type)basis='Demo format';}
   if(explicit&&explicit.id!=='uncategorized'&&['Your category','AI suggestion · reviewed by you'].includes(p.analysisSource)){type=explicit.id;basis='Your reviewed category';}
   // Only fall back to a short verified storefront excerpt, never purchase text or generic summaries.
   if(!type&&p.descriptionSource==='public-product'){const text=String(p.description||'').split(/upgrade|follow me|more tools|subscribe|youtube/i)[0].slice(0,500);type=rules.find(([,pattern])=>pattern.test(text))?.[0];if(type)basis='Public description';}
   type=type||'uncategorized';const mockup=type==='mockups'?mockupKinds.find(([, ,pattern])=>pattern.test(title)):null;
-  return {type,basis,suggested:true,mockup:mockup?.[0]||'',software:softwareRules.filter(([,pattern])=>pattern.test(title)).map(([name])=>name)};
+  return {type,basis,suggested:true,mockup:mockup?.[0]||'',software:softwareRules.filter(([,pattern])=>pattern.test(title+' '+demoFormat)).map(([name])=>name)};
  }
  // Public descriptions contribute explicit names only. File hints remain a title signal.
  const mentionRules=softwareRules.map(([name,title])=>({name,title,description:new RegExp('\\b'+name+'\\b','i')}));
@@ -47,6 +49,7 @@
    const sources=[];
    if(rule.title.test(title))sources.push('Title');
    if(rule.description.test(description))sources.push('Storefront description');
+   if(p.analysisSource==='AI review (demo)'&&rule.title.test(String(p.format||'')))sources.push('Demo format');
    if(sources.length)mentions.push({name:rule.name,sources});
   }
   return mentions;
