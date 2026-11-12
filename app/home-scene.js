@@ -89,7 +89,7 @@
         mx.paint(); my.paint();
       }
     }
-    if (!hero) { wasOnHome = false; shown.clear(); return; }
+    if (!hero) { wasOnHome = false; shown.clear(); spread = false; return; }
     const title = hero.querySelector('.home-title');
     if (title) splitTitle(title);
     if (hero.closest('.home-v2')?.classList.contains('is-idle')) buildShapes(hero);
@@ -98,9 +98,60 @@
       hero.classList.add('is-entering');
       setTimeout(() => app.querySelector('.home-hero')?.classList.remove('is-entering'), 1400);
     }
+    if (!wasOnHome) spread = false;
     shelves();
+    stack();
     wasOnHome = true;
   }
+  /* ---------- Jump back in: a card stack peeking from the bottom of the first screen ----------
+   * At rest the shelf's cards sit stacked and tilted, mostly below the fold, so only
+   * the title and the top of the stack show. Hover lifts and fans them. Clicking the
+   * stack or scrolling the page spreads them into the normal row (FLIP: every card
+   * flies from its stacked spot to its place in the row). Reduced motion: no stack. */
+  let spread = false, panelBound = null;
+  const JUMP = '.home-v2 .home-shelf[aria-labelledby="jump-back-title"]';
+  function fitFirstScreen() {
+    const v2 = app.querySelector('.home-v2.is-idle'), panel = document.querySelector('.main-panel');
+    const heroEl = v2?.querySelector('.home-hero');
+    if (!v2 || !panel || !heroEl) return;
+    const quote = v2.querySelector('.home-quote-strip');
+    const quoteH = quote ? quote.offsetHeight + parseFloat(getComputedStyle(quote).marginTop) : 0;
+    const peek = v2.querySelector(JUMP) ? 132 : 0; // constant, so spreading never moves the hero
+    heroEl.style.setProperty('min-height', Math.max(0, panel.clientHeight - quoteH - peek) + 'px', 'important');
+  }
+  function spreadStack(scrollTo) {
+    const shelf = app.querySelector(JUMP);
+    if (spread || !shelf) { spread = true; return; }
+    spread = true;
+    const cards = [...shelf.querySelectorAll('.home-card')];
+    const first = cards.map(c => { const r = c.getBoundingClientRect(), m = new DOMMatrixReadOnly(getComputedStyle(c).transform); return { cx: r.left + r.width / 2, cy: r.top + r.height / 2, angle: Math.atan2(m.b, m.a) * 180 / Math.PI, scale: Math.hypot(m.a, m.b) }; });
+    shelf.classList.remove('is-stacked'); shelf.classList.add('is-in', 'was-in');
+    fitFirstScreen();
+    if (full()) cards.forEach((c, i) => {
+      const r = c.getBoundingClientRect(), f = first[i];
+      const dx = f.cx - (r.left + r.width / 2), dy = f.cy - (r.top + r.height / 2);
+      c.animate([{ transform: `translate(${dx}px, ${dy}px) rotate(${f.angle}deg) scale(${f.scale})`, opacity: i > 2 ? 0 : 1 }, { transform: 'none', opacity: 1 }],
+        { duration: 560, delay: i * 45, easing: 'cubic-bezier(.2, 1.15, .32, 1)', fill: 'backwards' });
+    });
+    if (scrollTo) { const panel = document.querySelector('.main-panel'); if (panel) { const top = panel.scrollTop + shelf.getBoundingClientRect().top - panel.getBoundingClientRect().top - 24; panel.scrollTo({ top: Math.max(0, top), behavior: reduced() ? 'auto' : 'smooth' }); } }
+  }
+  function stack() {
+    const shelf = app.querySelector(JUMP), panel = document.querySelector('.main-panel');
+    if (panel && panel !== panelBound) {
+      panelBound = panel;
+      panel.addEventListener('scroll', () => { if (!spread && panel.scrollTop > 24 && app.querySelector(JUMP)) spreadStack(false); }, { passive: true });
+    }
+    if (shelf) shelf.classList.toggle('is-stacked', !spread && !reduced());
+    fitFirstScreen();
+  }
+  // A click on the stack spreads it instead of opening a card.
+  app.addEventListener('click', e => {
+    const shelf = e.target.closest?.(JUMP);
+    if (!shelf || !shelf.classList.contains('is-stacked')) return;
+    e.preventDefault(); e.stopPropagation(); spreadStack(true);
+  }, true);
+  addEventListener('resize', () => fitFirstScreen());
+
   /* Shelves pop their cards in once per Home visit, as they scroll into view. */
   const shown = new Set();
   const io = new IntersectionObserver(entries => {
