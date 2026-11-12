@@ -1,0 +1,105 @@
+/* 0.4.37 motion pass, glowing grid, Home rhythm and quote. Loaded last. */
+
+/* ---------- Scrollbars: no arrow buttons anywhere ----------
+   A standard scrollbar-color on the panels made Chromium ignore the thin custom
+   scrollbar and fall back to the default one with arrows. */
+body[data-theme] :is(.collection, .detail, .main-panel, dialog, .search-suggest, .creator-suggest, .home-category-panel) { scrollbar-color: auto !important; scrollbar-width: auto !important; }
+body[data-theme] .rail { scrollbar-width: none !important; }
+
+/* ---------- Home rhythm (even spacing: title → sub → prompt → chips → shapes) ---------- */
+body[data-theme] .home-v2 .home-hero { gap: 0 !important; padding-top: clamp(40px, 7vh, 80px) !important; }
+body[data-theme] .home-v2 .home-sub { margin-top: 14px !important; }
+body[data-theme] .home-v2 .home-prompt { margin-top: 30px !important; }
+body[data-theme] .home-v2 :is(.home-selected-types, .home-category-panel) { margin-top: 14px; }
+body[data-theme] .home-v2 .home-prompt-chips { margin-top: 16px !important; }
+body[data-theme] .home-v2 .home-shapes { margin-top: 30px !important; }
+
+/* ---------- Quote, centred under the hero ---------- */
+body[data-theme] .home-quote-strip {
+  display: flex !important; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 10px; row-gap: 6px;
+  max-width: 760px; margin: 34px auto 0 !important; padding: 0 20px !important; text-align: center;
+}
+body[data-theme] .home-quote-strip #home-headline {
+  flex: 1 1 100% !important; text-align: center !important; font-size: clamp(16px, 1.4vw, 19px) !important; line-height: 1.45 !important;
+  font-weight: 550 !important; letter-spacing: -0.005em !important; text-wrap: balance;
+}
+body[data-theme] .home-quote-strip :is(.quote-attribution, .quote-theme) { margin: 0; font-size: 12.5px; color: var(--color-secondary, var(--color-text)); }
+body[data-theme] .home-quote-strip .quote-attribution:not(:empty) + .quote-theme::before { content: "·"; margin-inline-end: 8px; opacity: .6; }
+body[data-theme] .home-quote-strip > :last-child { margin-inline-start: 4px !important; }
+body[data-theme] .home-quote-strip :is(.icon-button, .btn, .product-menu-trigger) { width: 30px !important; height: 30px !important; min-height: 30px !important; }
+
+/* ---------- Jump back in / Rediscover: cards pop in as the shelf scrolls into view ---------- */
+body[data-motion=full] .home-shelf:not(.is-in) .home-card { opacity: 0; transform: translateY(26px) rotate(-2.5deg) scale(.94); }
+body[data-motion=full] .home-shelf.is-in:not(.was-in) .home-card {
+  animation: card-pop 560ms cubic-bezier(.2, 1.25, .35, 1) both;
+  animation-delay: calc(min(var(--lg-i, 0), 8) * 55ms);
+}
+@keyframes card-pop {
+  0% { opacity: 0; transform: translateY(26px) rotate(-2.5deg) scale(.94); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+body[data-theme] .home-card { transition: transform 260ms cubic-bezier(.2, 1.2, .35, 1); transform-origin: 50% 90%; }
+@media (hover: hover) and (pointer: fine) {
+  body[data-motion=full] .home-card:hover { transform: translateY(-6px) rotate(-1deg); }
+  body[data-motion=full] .home-card:nth-child(even):hover { transform: translateY(-6px) rotate(1deg); }
+  body[data-theme] .home-card:hover .home-card-art { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text) 8%, transparent), 0 22px 40px -18px rgb(20 20 40 / .45); }
+}
+
+/* ---------- Glowing grid ----------
+   ::before draws a 1px ring lit by a light at the pointer (shared across the grid);
+   the hovered card also gets a soft spotlight inside. */
+body[data-theme] :is(.product, .category-card, .creator-card, .home-tile) { position: relative; isolation: isolate; }
+body[data-theme] :is(.product, .category-card, .creator-card, .home-tile)::before,
+body[data-theme] .home-card .home-card-art::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 3;
+  padding: 1px;
+  background: radial-gradient(520px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), var(--glow-ring, rgb(0 0 0 / .32)), transparent 42%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
+  opacity: 0; transition: opacity 500ms ease;
+}
+body[data-theme] .home-card .home-card-art { position: relative; }
+body[data-theme=dark] { --glow-ring: rgb(255 255 255 / .38); --glow-spot: rgb(255 255 255 / .06); }
+body[data-theme=light] { --glow-ring: color-mix(in srgb, var(--color-focus) 60%, rgb(0 0 0 / .35)); --glow-spot: color-mix(in srgb, var(--color-focus) 7%, transparent); }
+:is(.product-list, .category-grid, .home-row, .home-tiles).is-glowing :is(.product, .category-card, .creator-card, .home-tile)::before,
+:is(.home-row).is-glowing .home-card .home-card-art::before { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  body[data-theme] :is(.product, .category-card, .creator-card, .home-tile):hover {
+    background-image: radial-gradient(700px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--glow-spot), transparent 40%) !important;
+  }
+}
+
+/* ---------- Page transitions ---------- */
+body[data-motion=full] .main-panel.is-view-entering > * { animation: vt-in 280ms cubic-bezier(.23, 1, .32, 1) both; }
+@keyframes vt-in { from { opacity: 0; transform: translateY(10px); filter: blur(3px); } }
+
+/* Entrance stagger after any view change (not only pointer navigation). */
+body[data-motion=full] .main-panel.is-view-entering :is(.product, .category-card, .creator-card, .home-tile, .settings-card, .scan-history-row) {
+  animation: lg-settle 300ms cubic-bezier(.23, 1, .32, 1) both;
+  animation-delay: calc(min(var(--lg-i, 0), 12) * 30ms);
+}
+
+/* ---------- Success pulse + crossfaded icon ---------- */
+.lg-pulse { animation: lg-pulse 520ms cubic-bezier(.2, 1.3, .35, 1); }
+.lg-pulse svg { animation: icon-in 260ms cubic-bezier(.23, 1, .32, 1); }
+@keyframes lg-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-focus) 45%, transparent); scale: .9; }
+  45% { scale: 1.08; }
+  100% { box-shadow: 0 0 0 10px transparent; scale: 1; }
+}
+@keyframes icon-in { from { opacity: 0; filter: blur(4px); scale: .6; } to { opacity: 1; filter: none; scale: 1; } }
+#toast.lg-pulse { animation: toast-pulse 420ms cubic-bezier(.2, 1.2, .35, 1); }
+@keyframes toast-pulse { 0% { scale: .96; } 55% { scale: 1.02; } 100% { scale: 1; } }
+
+/* ---------- Fallbacks ---------- */
+body:not([data-motion=full]) :is(.lg-pulse, .lg-pulse svg, #toast.lg-pulse) { animation: none !important; }
+body:not([data-motion=full]) .home-shelf .home-card { opacity: 1 !important; transform: none !important; animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme] .main-panel > * { animation: none !important; }
+  body[data-theme] .home-shelf .home-card { opacity: 1 !important; transform: none !important; animation: none !important; }
+  body[data-theme] .main-panel :is(.product, .category-card, .creator-card) { animation: none !important; }
+}
+@media (forced-colors: active) {
+  body[data-theme] :is(.product, .category-card, .creator-card, .home-tile)::before, body[data-theme] .home-card .home-card-art::before { display: none; }
+}

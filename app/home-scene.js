@@ -89,7 +89,7 @@
         mx.paint(); my.paint();
       }
     }
-    if (!hero) { wasOnHome = false; return; }
+    if (!hero) { wasOnHome = false; shown.clear(); return; }
     const title = hero.querySelector('.home-title');
     if (title) splitTitle(title);
     if (hero.closest('.home-v2')?.classList.contains('is-idle')) buildShapes(hero);
@@ -98,7 +98,21 @@
       hero.classList.add('is-entering');
       setTimeout(() => app.querySelector('.home-hero')?.classList.remove('is-entering'), 1400);
     }
+    shelves();
     wasOnHome = true;
+  }
+  /* Shelves pop their cards in once per Home visit, as they scroll into view. */
+  const shown = new Set();
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) if (e.isIntersecting) { const key = e.target.getAttribute('aria-labelledby') || ''; shown.add(key); e.target.classList.add('is-in'); io.unobserve(e.target); }
+  }, { threshold: 0.15 });
+  function shelves() {
+    if (!wasOnHome) shown.clear();
+    for (const shelf of app.querySelectorAll('.home-v2 .home-shelf')) {
+      const key = shelf.getAttribute('aria-labelledby') || '';
+      if (shown.has(key) || reduced()) shelf.classList.add('is-in', 'was-in');
+      else io.observe(shelf);
+    }
   }
   let queued = false;
   new MutationObserver(() => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; sync(); }); } }).observe(app, { childList: true, subtree: true });
