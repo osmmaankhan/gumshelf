@@ -2,15 +2,32 @@
 
 A local-first Windows library for things you bought or claimed on Gumroad. GumShelf is independent and not affiliated with Gumroad.
 
-## Screenshots to take
+**[Download free on Gumroad](https://osmmaankhan.gumroad.com/l/gumshelf)** · pay what you want · Windows 10/11
 
-Use fictional or cleared content for these placeholders:
+## Screenshots
 
-- ![Home](release-kit/screenshots/home.png) ? search-first Home.
-- ![Library](release-kit/screenshots/library.png) ? library search and filters.
-- ![Categories](release-kit/screenshots/categories.png) ? category browsing.
-- ![Organization](release-kit/screenshots/creators-collections.png) ? creators and collections.
-- ![Appearance](release-kit/screenshots/appearance.png) ? Light, Dark and Black.
+Shown with the built-in fictional demo library.
+
+- Search-first Home.
+
+  ![Home](release-kit/screenshots/home.png)
+
+- Library search and filters.
+
+  ![Library](release-kit/screenshots/library.png)
+
+- Category browsing.
+
+  ![Categories](release-kit/screenshots/categories.png)
+
+- Creators and collections.
+
+  ![Organization](release-kit/screenshots/creators-collections.png)
+
+- Light, Dark and Black.
+
+  ![Appearance](release-kit/screenshots/appearance.png)
+
 
 ## Features
 
@@ -18,7 +35,7 @@ Search from Home using names, descriptions and project-related words. Browse cat
 
 ## Install
 
-1. Download from {{GUMROAD_URL}}, extract the portable Windows folder somewhere writable, and open GumShelf.exe. Keep the folder together.
+1. Download from https://osmmaankhan.gumroad.com/l/gumshelf, extract the portable Windows folder somewhere writable, and open GumShelf.exe. Keep the folder together.
 2. Sign in to Gumroad in your usual Chrome or Edge profile and open your Gumroad Library. In GumShelf open **Connect Gumroad**.
 3. Open the browser Extensions page, enable Developer mode, choose **Load unpacked**, and select the included resources/browser-helper folder. Open the helper, select your signed-in Library tab, and enter the eight-digit code shown in GumShelf.
 4. Start a scan in GumShelf and keep your browser signed in while it runs.
@@ -48,7 +65,7 @@ Possible future work: a Chrome Web Store helper, a signed installer, more stores
 
 ## Support and contribute
 
-GumShelf is free and open source. If it helps you, an optional contribution at {{GUMROAD_URL}} supports future work. Report issues or contribute at {{GITHUB_URL}}; see [Contributing](CONTRIBUTING.md).
+GumShelf is free and open source. If it helps you, an optional contribution at https://osmmaankhan.gumroad.com/l/gumshelf supports future work. Report issues or contribute at https://github.com/osmmaankhan/gumshelf; see [Contributing](CONTRIBUTING.md).
 
 ## Credits
 

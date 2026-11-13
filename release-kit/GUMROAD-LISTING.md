@@ -1,4 +1,4 @@
-# GumShelf ? Gumroad listing draft
+# GumShelf — Gumroad listing draft
 
 **Tagline:** Find the digital resources you already own.
 
@@ -20,7 +20,7 @@ Choose Light, Dark or Black for the glass-inspired interface. GumShelf is open s
 
 **Price:** Pay what you want ($0+); suggested $5.
 
-**Included:** Portable Windows app folder and browser helper, with setup instructions. Source: {{GITHUB_URL}}.
+**Included:** Portable Windows app folder and browser helper, with setup instructions. Source: https://github.com/osmmaankhan/gumshelf.
 
 **Requirements:** Windows 10 or 11, 64-bit; Chrome or Edge for the helper; a signed-in Gumroad account and internet connection for library scans.
 
@@ -36,7 +36,7 @@ Choose Light, Dark or Black for the glass-inspired interface. GumShelf is open s
 
 ## Cover image brief
 
-Show the GumShelf name, ?Find what you already own? and a clean glass-inspired library interface using fictional products. Keep the title readable at thumbnail size; avoid Gumroad logos or implied endorsement.
+Show the GumShelf name, “Find what you already own” and a clean glass-inspired library interface using fictional products. Keep the title readable at thumbnail size; avoid Gumroad logos or implied endorsement.
 
 ## Screenshot captions
 
